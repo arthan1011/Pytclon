@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <script src="webjars/dojo/1.10.0/dojo/dojo.js.uncompressed.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        require([
+                'dojo/dom',
+                'dojo/dom-construct',
+                'dojo/domReady!'
+        ], function(dom, domConstruct) {
+            var welcomeNode = dom.byId('welcome');
+            domConstruct.place('<em>Welcome to Game</em>', welcomeNode);
+        });
+    </script>
+    Main Page content
+    <span id="welcome"></span>
+</body>
+</html>
