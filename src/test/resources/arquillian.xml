@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian
+            http://www.jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <defaultProtocol type="Servlet 3.0"/>
+
+    <container qualifier="wildfly"
+               default="true">
+
+    </container>
+
+    <extension qualifier="webdriver">
+        <property name="browser">${browser}</property>
+        <property name="chrome.binary">/opt/google/chrome</property>
+        <property name="chromeDriverBinary">/home/arthan/Programms/chromedriver</property>
+    </extension>
+
+</arquillian>

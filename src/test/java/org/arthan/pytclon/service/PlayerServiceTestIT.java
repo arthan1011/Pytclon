@@ -31,10 +31,6 @@ public class PlayerServiceTestIT {
 
     @Deployment
     public static JavaArchive createDeployment() {
-        WebArchive war = ShrinkWrap.create(ZipImporter.class, "pytclon_test.war")
-                .importFrom(new File("target/pytclon.war"))
-                .as(WebArchive.class);
-
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addClass(PlayerService.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
