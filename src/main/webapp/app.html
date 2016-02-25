@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Main Page</title>
+    <title>Dojo Practice</title>
     <style>
         html, body {
             height: 100%;
@@ -27,25 +27,18 @@
             height: 550px;
         }
     </style>
-    <link rel="stylesheet" href="webjars/dojo/1.10.4/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="lib/dijit/themes/claro/claro.css">
 </head>
 <body class="claro">
-    <script data-dojo-config="async: true, parseOnLoad: true" src="webjars/dojo/1.10.4/dojo/dojo.js.uncompressed.js"></script>
-    <script type="text/javascript">
+    <script data-dojo-config="async: true, parseOnLoad: true" src="lib/dojo/dojo.js"></script>
+    <script>
         require([
                 'dojo/parser',
                 'dijit/layout/ContentPane',
                 'dijit/layout/BorderContainer',
-                'dojo/dom',
-                'dojo/dom-construct',
                 'dojo/domReady!'
-        ], function(parser, ContentPane, BorderContainer, dom, domConstruct) {
-            var welcomeNode = dom.byId('welcome');
-            domConstruct.place('<em>Welcome to Game</em>', welcomeNode);
-        });
+        ])
     </script>
-    Main Page content
-    <span id="welcome"></span>
     <div
             id="appLayout" class="demoLayout"
             data-dojo-type="dijit/layout/BorderContainer"
