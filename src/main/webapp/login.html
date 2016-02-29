@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
+    <link rel="stylesheet" href="css/login.css" type="text/css">
 </head>
 <body>
-Login form here
-<form name="loginForm" method="POST" action="j_security_check">
-    <div>
-        <div>
-            <label for="username">Username: </label>
-            <input type="text" size="15" id="username" name="j_username"/>
+
+<div class="login">
+    <div class="login-screen">
+        <div class="app-title">
+            <h1>Login</h1>
         </div>
-        <div>
-            <label for="password">Password: </label>
-            <input type="password" size="15" id="password" name="j_password"/>
-        </div>
-        <input id="loginSubmit" type="submit" value="Submit" />
+
+        <form name="loginForm" method="POST" action="j_security_check" class="login-form">
+            <div class="control-group">
+                <input type="text" class="login-field" name="j_username" value="" placeholder="username" id="username">
+                <label class="login-field-icon fui-user" for="username"></label>
+            </div>
+
+            <div class="control-group">
+                <input type="password" class="login-field" name="j_password" value="" placeholder="password" id="password">
+                <label class="login-field-icon fui-lock" for="password"></label>
+            </div>
+
+            <button class="btn" type="submit">Login</button>
+        </form>
     </div>
-</form>
+</div>
 
 </body>
 </html>

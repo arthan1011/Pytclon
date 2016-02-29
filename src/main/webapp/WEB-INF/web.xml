@@ -3,18 +3,27 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
     http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>static resources</web-resource-name>
+            <url-pattern>/css/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Pytclon</web-resource-name>
             <url-pattern>/*</url-pattern>
             <http-method>GET</http-method>
-            <http-method>POSt</http-method>
+            <http-method>POST</http-method>
         </web-resource-collection>
         <auth-constraint>
             <role-name>client</role-name>
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
