@@ -1,4 +1,4 @@
-package org.arthan.pytclon.rest;
+package org.arthan.pytclon.web.rest;
 
 import org.arthan.pytclon.service.ProtectedInfoService;
 

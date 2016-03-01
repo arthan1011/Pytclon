@@ -1,8 +1,10 @@
-package org.arthan.pytclon.rest;
+package org.arthan.pytclon.web.rest;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,9 +17,9 @@ import java.util.Set;
 public class JaxRsApplication extends Application {
 
     @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> classes = new HashSet<>();
-        classes.add(PlayerResource.class);
-        return classes;
+    public Map<String, Object> getProperties() {
+        Map<String, Object> props = new HashMap<>();
+        props.put("resteasy.scan", true);
+        return props;
     }
 }
