@@ -1,13 +1,12 @@
 package org.arthan.pytclon.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by ashamsiev on 01.03.2016
@@ -15,6 +14,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
+@SecondaryTable(name = "user_roles", pkJoinColumns = {@PrimaryKeyJoinColumn(name = "login") })
 public class User implements Serializable {
 
     @Id
@@ -24,6 +24,9 @@ public class User implements Serializable {
     @JsonIgnore
     @Column(name = "passwd")
     private String password;
+
+    @Column(table = "user_roles", name = "role")
+    private String roles;
 
     public String getLogin() {
         return login;
@@ -40,6 +43,15 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<String> getRoles() {
+        String[] roles = this.roles.split(",\\s*");
+        return Lists.newArrayList(roles);
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = Joiner.on(", ").join(roles);
     }
 
     @Override
