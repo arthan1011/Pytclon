@@ -1,0 +1,137 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.5
+-- Dumped by pg_dump version 9.4.5
+-- Started on 2016-03-01 11:48:44
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 174 (class 3079 OID 11855)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2006 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 173 (class 1259 OID 16806)
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: jboss; Tablespace: 
+--
+
+CREATE TABLE user_roles (
+    login character varying(64) NOT NULL,
+    role character varying(64) NOT NULL
+);
+
+
+ALTER TABLE user_roles OWNER TO jboss;
+
+--
+-- TOC entry 172 (class 1259 OID 16801)
+-- Name: users; Type: TABLE; Schema: public; Owner: jboss; Tablespace: 
+--
+
+CREATE TABLE users (
+    passwd character varying(256) NOT NULL,
+    login character varying(64) NOT NULL
+);
+
+
+ALTER TABLE users OWNER TO jboss;
+
+--
+-- TOC entry 1998 (class 0 OID 16806)
+-- Dependencies: 173
+-- Data for Name: user_roles; Type: TABLE DATA; Schema: public; Owner: jboss
+--
+
+COPY user_roles (login, role) FROM stdin;
+arthan	admin
+python	client
+arthan1011	admin
+python30	client
+\.
+
+
+--
+-- TOC entry 1997 (class 0 OID 16801)
+-- Dependencies: 172
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: jboss
+--
+
+COPY users (passwd, login) FROM stdin;
+Ecj3XMA1pbPDqE7GgS6DLWa3h2oO55jns5YgJEtVerY=	arthan
+HIv+j4AdeXRcRjHQn/82yCqjf8TM5PyUZoPXsza2MDI=	python
+qazqaz	arthan1011
+letmein	python30
+\.
+
+
+--
+-- TOC entry 1884 (class 2606 OID 16805)
+-- Name: USERS_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT "USERS_pkey" PRIMARY KEY (login);
+
+
+--
+-- TOC entry 1886 (class 2606 OID 16810)
+-- Name: USER_ROLES_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY user_roles
+    ADD CONSTRAINT "USER_ROLES_pkey" PRIMARY KEY (login);
+
+
+--
+-- TOC entry 1887 (class 2606 OID 16811)
+-- Name: USER_ROLES_login_fkey; Type: FK CONSTRAINT; Schema: public; Owner: jboss
+--
+
+ALTER TABLE ONLY user_roles
+    ADD CONSTRAINT "USER_ROLES_login_fkey" FOREIGN KEY (login) REFERENCES users(login);
+
+
+--
+-- TOC entry 2005 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-03-01 11:48:45
+
+--
+-- PostgreSQL database dump complete
+--
+
