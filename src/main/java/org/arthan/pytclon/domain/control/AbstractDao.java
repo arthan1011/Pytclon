@@ -1,6 +1,5 @@
 package org.arthan.pytclon.domain.control;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
