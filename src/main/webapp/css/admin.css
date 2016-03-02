@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+#adminLayout {
+    height: 100%;
+}
+#leftCol {
+    width: 17em;
+}
+.header-title {
+    font-weight: bold;
+    font-size: large;
+}
+
+.claro .demoLayout .edgePanel {
+    background-color: #bbd2e5;
+}
+.claro .demoLayout .centerPanel {
+    background-color: #e8dde7;
+}
