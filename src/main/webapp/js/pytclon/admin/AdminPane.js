@@ -10,6 +10,8 @@ define([
     "dijit/_WidgetsInTemplateMixin",
     "dijit/layout/ContentPane",
     "dijit/layout/BorderContainer",
+    "dijit/form/Button",
+    "dijit/layout/StackContainer",
     "dojo/text!./templates/AdminPane.html"
 ], function(
     declare,
@@ -19,10 +21,23 @@ define([
     _WidgetsInTemplateMixin,
     ContentPane,
     BorderContainer,
+    Button,
+    StackContainer,
     template
 ) {
     return declare("admin/AdminPane", [LayoutContainer, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
-        templateString: template
+        templateString: template,
+
+        _index: 0,
+
+        toggle: function() {
+            var children = this.mainStackPanel.getChildren();
+
+            this._index = (this._index + 1) % children.length;
+
+            this.mainStackPanel.selectChild(children[this._index]);
+            console.debug(this._index);
+        }
     })
 });

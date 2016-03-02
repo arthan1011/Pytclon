@@ -6,7 +6,19 @@
         <div class="centerPanel"
              data-dojo-type="dijit/layout/ContentPane"
              data-dojo-props="region: 'center'">
-
+            <div data-dojo-type="dijit/layout/StackContainer"
+                 data-dojo-attach-point="mainStackPanel"
+                 data-dojo-id="adminStackContainer">
+                <div data-dojo-type="dijit/layout/ContentPane" title="First">
+                    Users
+                </div>
+                <div data-dojo-type="dijit/layout/ContentPane" title="Second">
+                    Not Users
+                </div>
+                <div data-dojo-type="dijit/layout/ContentPane" title="Third">
+                    Settings
+                </div>
+            </div>
         </div>
         <div class="edgePanel"
              data-dojo-type="dijit/layout/ContentPane"
@@ -18,6 +30,14 @@
              data-dojo-type="dijit/layout/ContentPane"
              data-dojo-props="region: 'left'">
             Sidebar content (left)
+            <button type="button" id="myButton" data-dojo-type="dijit/form/Button">
+                <span>Click</span>
+                <script type="dojo/on" data-dojo-event="click">
+                    console.log('clicked');
+                    var registry = require("dijit/registry");
+                    registry.byId("mainAdmin").toggle();
+                </script>
+            </button>
         </div>
     </div>
 </div>
