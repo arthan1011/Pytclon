@@ -5,8 +5,7 @@
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
-    "dijit/_WidgetBase",
-    "dijit/_Container",
+    "dijit/layout/LayoutContainer",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dijit/layout/ContentPane",
@@ -15,15 +14,14 @@ define([
 ], function(
     declare,
     domConstruct,
-    _WidgetBase,
-    _Container,
+    LayoutContainer,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
     ContentPane,
     BorderContainer,
     template
 ) {
-    return declare("admin/AdminPane", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare("admin/AdminPane", [LayoutContainer, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
         templateString: template
     })

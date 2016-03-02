@@ -1,4 +1,4 @@
-html, body {
+html, body, .outerContainer {
     height: 100%;
     margin: 0;
     overflow: hidden;
