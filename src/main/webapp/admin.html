@@ -7,35 +7,8 @@
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="claro">
-<script>
-    var dojoConfig = {
-        packages: [
-            {
-                name: "pytclon",
-                location: "../../../../js/pytclon"
-            }
-        ]
-    }
-</script>
+<script type="text/javascript" src="js/app/dojoConfig.js"></script>
 <script data-dojo-config="async: true, parseOnLoad: false" src="webjars/dojo/1.10.4/dojo/dojo.js.uncompressed.js"></script>
-<script>
-    require([
-            'dojo/parser',
-            'dojo/_base/window',
-            'dojo/dom-construct',
-            'dojo/text!./pages/adminLayout.html',
-            'dojo/domReady!'
-    ], function(
-            parser,
-            win,
-            domConstruct,
-            adminLayoutFragment
-    ) {
-        domConstruct.place(adminLayoutFragment, win.body());
-
-        parser.parse();
-    })
-</script>
-
+<script type="text/javascript" src="js/app/adminApp.js"></script>
 </body>
 </html>
