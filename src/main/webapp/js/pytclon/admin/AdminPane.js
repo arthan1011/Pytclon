@@ -31,7 +31,7 @@ define([
         widgetsInTemplate: true,
         templateString: template,
 
-        _panelNames: ['Users', 'Not Users', 'Settings'],
+        _panelNames: ['Users', 'Not Users', 'Settings', 'New Panel'],
 
         postCreate: function() {
             this.stackPanel.initChildPanels(this._panelNames);
