@@ -32,13 +32,10 @@
             <div data-dojo-type="pytclon/admin/AdminLeftMenu"
                  data-dojo-attach-point="leftMenu"></div>
             Sidebar content (left)
-            <button type="button" id="myButton" data-dojo-type="dijit/form/Button">
+            <button id="myButton"
+                    data-dojo-type="dijit/form/Button"
+                    data-dojo-attach-event="onClick:btnClicked">
                 <span>Click</span>
-                <script type="dojo/on" data-dojo-event="click">
-                    console.log('clicked');
-                    var registry = require("dijit/registry");
-                    registry.byId("mainAdmin").toggle();
-                </script>
             </button>
         </div>
     </div>

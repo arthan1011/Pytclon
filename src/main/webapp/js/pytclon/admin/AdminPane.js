@@ -40,6 +40,11 @@ define([
 
             this.mainStackPanel.selectChild(children[this._index]);
             console.debug(this._index);
+        },
+
+        btnClicked: function() {
+            console.debug('Button clicked!');
+            this.leftMenu.test();
         }
     })
 });
