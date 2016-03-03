@@ -1,39 +1,40 @@
 /**
+ * Created by ashamsiev on 03.03.2016.
+ */
+
+/**
  * Created by ashamsiev on 02.03.2016.
  */
 
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
+    "dojo/topic",
     "dijit/layout/LayoutContainer",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
-    "dijit/layout/ContentPane",
-    "dijit/layout/BorderContainer",
-    "dijit/form/Button",
-    "pytclon/admin/AdminLeftMenu",
-    "pytclon/admin/AdminStackPanel",
-    "dojo/text!./templates/AdminPane.html"
+    "dijit/layout/StackContainer",
+    "dojo/text!./templates/AdminStackPanel.html"
 ], function(
     declare,
     domConstruct,
+    topic,
     LayoutContainer,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
-    ContentPane,
-    BorderContainer,
-    Button,
-    AdminLeftMenu,
-    AdminStackPanel,
+    StackContainer,
     template
 ) {
     return declare("admin/AdminPane", [LayoutContainer, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
         templateString: template,
 
-        btnClicked: function() {
-            console.debug('Button clicked!');
-            this.leftMenu.test();
+        postCreate: function() {
+            topic.subscribe('pytclon/admin/switchPanel', this.switchPanel)
+        },
+
+        switchPanel: function(panel) {
+            console.debug('Switching: ' + panel);
         }
     })
 });

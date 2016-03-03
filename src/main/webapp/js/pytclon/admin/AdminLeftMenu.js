@@ -11,6 +11,7 @@ define([
     "dojo/dom-construct",
     "dojo/on",
     "dojo/aspect",
+    "dojo/topic",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
@@ -22,6 +23,7 @@ define([
     domConstruct,
     on,
     aspect,
+    topic,
     _WidgetBase,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
@@ -40,15 +42,11 @@ define([
                 this.own(aspect.after(menuItem, "onClick", function() {
                     var itemLabel = menuItem.label;
                     return function() {
+                        topic.publish('pytclon/admin/switchPanel', itemLabel);
                         console.debug(itemLabel);
                     }
                 }(), true))
             }
-            this.own(
-                aspect.after(this.menu, "onClick", function(e) {
-                    console.debug('Menu clicked');
-                }, true)
-            );
         },
 
         test: function() {

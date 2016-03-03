@@ -6,19 +6,8 @@
         <div class="centerPanel"
              data-dojo-type="dijit/layout/ContentPane"
              data-dojo-props="region: 'center'">
-            <div data-dojo-type="dijit/layout/StackContainer"
-                 data-dojo-attach-point="mainStackPanel"
-                 data-dojo-id="adminStackContainer">
-                <div data-dojo-type="dijit/layout/ContentPane" title="First">
-                    Users
-                </div>
-                <div data-dojo-type="dijit/layout/ContentPane" title="Second">
-                    Not Users
-                </div>
-                <div data-dojo-type="dijit/layout/ContentPane" title="Third">
-                    Settings
-                </div>
-            </div>
+            <div data-dojo-type="pytclon/admin/AdminStackPanel"
+                 data-dojo-attach-point="stackPanel"></div>
         </div>
         <div class="edgePanel"
              data-dojo-type="dijit/layout/ContentPane"
