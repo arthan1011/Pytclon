@@ -31,6 +31,13 @@ define([
         widgetsInTemplate: true,
         templateString: template,
 
+        _panelNames: ['Users', 'Not Users', 'Settings'],
+
+        postCreate: function() {
+            this.stackPanel.initChildPanels(this._panelNames);
+            this.leftMenu.initMenuItems(this._panelNames);
+        },
+
         btnClicked: function() {
             console.debug('Button clicked!');
             this.leftMenu.test();

@@ -10,6 +10,7 @@ define([
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/on",
+    "dojo/_base/lang",
     "dojo/aspect",
     "dojo/topic",
     "dijit/_WidgetBase",
@@ -22,6 +23,7 @@ define([
     declare,
     domConstruct,
     on,
+    lang,
     aspect,
     topic,
     _WidgetBase,
@@ -36,17 +38,21 @@ define([
         templateString: template,
 
         postCreate: function() {
-            var menuItems =  this.menu.getChildren();
-            for (var i = 0; i < menuItems.length; i++) {
-                var menuItem = menuItems[i];
-                this.own(aspect.after(menuItem, "onClick", function() {
-                    var itemLabel = menuItem.label;
-                    return function() {
-                        topic.publish('pytclon/admin/switchPanel', itemLabel);
-                        console.debug(itemLabel);
+
+        },
+
+        initMenuItems: function(labels) {
+            labels.forEach(lang.hitch(this, function(item) {
+
+                var newMenuItem = new MenuItem({
+                    label: item,
+                    onClick: function() {
+                        topic.publish('pytclon/admin/switchPanel', item);
                     }
-                }(), true))
-            }
+                });
+
+                this.menu.addChild(newMenuItem);
+            }));
         },
 
         test: function() {
