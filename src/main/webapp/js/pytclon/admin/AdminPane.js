@@ -12,6 +12,7 @@ define([
     "dijit/layout/BorderContainer",
     "dijit/form/Button",
     "dijit/layout/StackContainer",
+    "pytclon/admin/AdminLeftMenu",
     "dojo/text!./templates/AdminPane.html"
 ], function(
     declare,
@@ -23,6 +24,7 @@ define([
     BorderContainer,
     Button,
     StackContainer,
+    AdminLeftMenu,
     template
 ) {
     return declare("admin/AdminPane", [LayoutContainer, _TemplatedMixin, _WidgetsInTemplateMixin], {
