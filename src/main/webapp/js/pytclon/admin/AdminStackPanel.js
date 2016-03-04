@@ -34,7 +34,9 @@ define([
         templateString: template,
 
         postCreate: function() {
-            topic.subscribe('pytclon/admin/switchPanel', lang.hitch(this, this.switchPanel));
+            this.own(
+                topic.subscribe('pytclon/admin/switchPanel', lang.hitch(this, this.switchPanel))
+            );
         },
 
         switchPanel: function(panelTitle) {
