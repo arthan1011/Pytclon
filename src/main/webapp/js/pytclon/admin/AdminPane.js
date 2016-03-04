@@ -5,6 +5,7 @@
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
+    "dojo/store/JsonRest",
     "dijit/layout/LayoutContainer",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
@@ -17,6 +18,7 @@ define([
 ], function(
     declare,
     domConstruct,
+    JsonRest,
     LayoutContainer,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
@@ -40,7 +42,16 @@ define([
 
         btnClicked: function() {
             console.debug('Button clicked!');
-            this.leftMenu.test();
+
+            var userStore = new JsonRest({
+                target: '/pytclon/rest/users'
+            });
+            userStore.get()
+                .then(function(result) {
+                result.forEach(function(item) {
+                    console.debug(JSON.stringify(item));
+                });
+            })
         }
     })
 });

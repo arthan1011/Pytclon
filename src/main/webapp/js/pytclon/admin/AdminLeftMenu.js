@@ -53,10 +53,6 @@ define([
 
                 this.menu.addChild(newMenuItem);
             }));
-        },
-
-        test: function() {
-            console.debug(this.menu.getChildren());
         }
 
     })
