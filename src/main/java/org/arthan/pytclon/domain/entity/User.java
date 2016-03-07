@@ -21,7 +21,6 @@ public class User implements Serializable {
     @Column(name = "login")
     private String login;
 
-    @JsonIgnore
     @Column(name = "passwd")
     private String password;
 
@@ -34,11 +33,6 @@ public class User implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    @JsonIgnore
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
@@ -58,6 +52,8 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", roles='" + roles + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,7 @@
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
+    "dojo/dom",
     "dojo/store/JsonRest",
     "dojo/store/Memory",
     "gridx/Grid",
@@ -22,6 +23,7 @@ define([
 ], function(
     declare,
     domConstruct,
+    dom,
     JsonRest,
     Store,
     Grid,
@@ -47,7 +49,9 @@ define([
             {
                 title: 'Users',
                 widget: new ContentPane({
-                    content: '<div id="gridNode" style="width: 400px; height: 200px;"></div>',
+                    content:
+                    '<div><button type="button" id="addUserBtn">Add</button></div>' +
+                    '<div id="gridNode" style="width: 400px; height: 200px;"></div>',
                     title: 'Users',
                     postCreate: function() {
                         var restStore = new JsonRest({
@@ -56,6 +60,15 @@ define([
 
                         restStore.get().then(function(data) {
                             console.debug(JSON.stringify(data));
+
+                            var button = new Button({
+                                label: 'Add User',
+                                onClick: function () {
+                                    restStore.add({login: 'new', password: 'password', roles: ['client']});
+                                    console.debug('User Added!');
+                                }
+                            }, 'addUserBtn');
+                            button.startup();
 
                             var userData = data.map(function(item, $index) {
                                 return {
@@ -68,21 +81,9 @@ define([
                             console.debug(JSON.stringify(userData));
 
                             var store = new Store({
-                                /*data: [
-                                 {id: 1, title: 'Hey There', artist: 'Bette Midler'},
-                                 {id: 2, title: 'Love or Confusion', artist: 'Jimi Hendrix'},
-                                 {id: 3, title: 'Sugar Street', artist: 'Andy Narell'}
-                                 ]*/
                                 data: userData
-                                /*data: [
-                                 {login:"arthan",roles:"admin"},
-                                 {login:"python",roles:"client"}
-                                 ]*/
                             });
                             var columns = [
-                                /*{field: 'id', name: 'Identity'},
-                                 {field: 'title', name: 'Title'},
-                                 {field: 'artist', name: 'Artist'}*/
                                 {field: 'id', name: 'ID'},
                                 {field: 'login', name: 'Login'},
                                 {field: 'roles', name: 'Roles'}
