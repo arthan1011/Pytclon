@@ -22,3 +22,9 @@ html, body, .outerContainer {
 .claro .demoLayout .centerPanel {
     background-color: #e8dde7;
 }
+
+/*For GridX*/
+.gridx {
+    height: 100%;
+    width: 100%;
+}

@@ -41,13 +41,13 @@ define([
 
         },
 
-        initMenuItems: function(labels) {
-            labels.forEach(lang.hitch(this, function(item) {
+        initMenuItems: function(panels) {
+            panels.forEach(lang.hitch(this, function(item) {
 
                 var newMenuItem = new MenuItem({
-                    label: item,
+                    label: item.title,
                     onClick: function() {
-                        topic.publish('pytclon/admin/switchPanel', item);
+                        topic.publish('pytclon/admin/switchPanel', item.title);
                     }
                 });
 

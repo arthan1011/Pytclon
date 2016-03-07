@@ -50,13 +50,10 @@ define([
             }
         },
 
-        initChildPanels: function(labels) {
-            for (var i = 0; i < labels.length; i++) {
-                var label = labels[i];
-                this.mainStackPanel.addChild(new ContentPane({
-                    content: label,
-                    title: label
-                }));
+        initChildPanels: function(panels) {
+            for (var i = 0; i < panels.length; i++) {
+                var panel = panels[i];
+                this.mainStackPanel.addChild(panel.widget);
             }
         }
     })
