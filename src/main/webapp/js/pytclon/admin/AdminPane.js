@@ -19,6 +19,7 @@ define([
     "dijit/layout/BorderContainer",
     "dijit/form/Button",
     "dijit/form/TextBox",
+    "dijit/form/ValidationTextBox",
     "pytclon/admin/AdminLeftMenu",
     "pytclon/admin/AdminStackPanel",
     "dojo/text!./templates/AdminPane.html"
@@ -39,6 +40,7 @@ define([
     BorderContainer,
     Button,
     TextBox,
+    ValidationTextBox,
     AdminLeftMenu,
     AdminStackPanel,
     template
@@ -82,9 +84,16 @@ define([
                                 }
                             }, 'addUserBtn');
                             button.startup();
-                            var loginInput = new TextBox({}, "loginInput");
+                            var loginInput = new ValidationTextBox({
+                                required: true,
+                                promptMessage: 'Enter login',
+                                missingMessage: 'You should specify login!'
+                            }, "loginInput");
                             loginInput.startup();
-                            var passInput = new TextBox({
+                            var passInput = new ValidationTextBox({
+                                required: true,
+                                promptMessage: 'Enter password',
+                                missingMessage: 'You should specify password!',
                                 type: 'password'
                             }, "passInput");
                             passInput.startup();
