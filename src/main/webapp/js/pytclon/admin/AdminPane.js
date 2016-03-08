@@ -11,12 +11,14 @@ define([
     "gridx/Grid",
     "gridx/core/model/cache/Sync",
     "gridx/modules/SingleSort",
+    "dijit/registry",
     "dijit/layout/LayoutContainer",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dijit/layout/ContentPane",
     "dijit/layout/BorderContainer",
     "dijit/form/Button",
+    "dijit/form/TextBox",
     "pytclon/admin/AdminLeftMenu",
     "pytclon/admin/AdminStackPanel",
     "dojo/text!./templates/AdminPane.html"
@@ -29,12 +31,14 @@ define([
     Grid,
     Cache,
     SingleSort,
+    registry,
     LayoutContainer,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
     ContentPane,
     BorderContainer,
     Button,
+    TextBox,
     AdminLeftMenu,
     AdminStackPanel,
     template
@@ -50,7 +54,10 @@ define([
                 title: 'Users',
                 widget: new ContentPane({
                     content:
-                    '<div><button type="button" id="addUserBtn">Add</button></div>' +
+                    '<div><button type="button" id="addUserBtn">Add</button>' +
+                    '<label for="loginInput">Login: </label><input id="loginInput" />' +
+                    '<label for="passInput">Password: </label><input id="passInput" /> ' +
+                    ' </div>' +
                     '<div id="gridNode" style="width: 400px; height: 200px;"></div>',
                     title: 'Users',
                     postCreate: function() {
@@ -64,11 +71,23 @@ define([
                             var button = new Button({
                                 label: 'Add User',
                                 onClick: function () {
-                                    restStore.add({login: 'new', password: 'password', roles: ['client']});
+                                    var passInput = registry.byId('passInput');
+                                    var loginInput = registry.byId('loginInput');
+                                    restStore.add({
+                                        login: loginInput.get('value'),
+                                        password: passInput.get('value'),
+                                        roles: ['client']
+                                    });
                                     console.debug('User Added!');
                                 }
                             }, 'addUserBtn');
                             button.startup();
+                            var loginInput = new TextBox({}, "loginInput");
+                            loginInput.startup();
+                            var passInput = new TextBox({
+                                type: 'password'
+                            }, "passInput");
+                            passInput.startup();
 
                             var userData = data.map(function(item, $index) {
                                 return {
