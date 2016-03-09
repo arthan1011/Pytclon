@@ -3,6 +3,7 @@
  */
 
 var dojoConfig = {
+    isDebug: true,
     packages: [
         {
             name: "pytclon",
