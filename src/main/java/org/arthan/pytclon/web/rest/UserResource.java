@@ -4,9 +4,8 @@ import org.arthan.pytclon.domain.control.UserDao;
 import org.arthan.pytclon.domain.entity.User;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -24,5 +23,11 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> getAllUsers() {
         return userDao.findAll();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addUser(User user) {
+        System.out.println(user);
     }
 }

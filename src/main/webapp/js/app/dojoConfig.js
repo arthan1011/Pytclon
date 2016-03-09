@@ -7,6 +7,10 @@ var dojoConfig = {
         {
             name: "pytclon",
             location: "../../../../js/pytclon"
+        },
+        {
+            name: "gridx",
+            location: "../../../gridx/1.3.3"
         }
     ]
 }
