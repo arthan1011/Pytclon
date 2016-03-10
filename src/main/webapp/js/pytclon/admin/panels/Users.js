@@ -12,7 +12,8 @@ define([
     "gridx/Grid",
     "gridx/core/model/cache/Async",
     "gridx/modules/SingleSort",
-    "pytclon/admin/panels/_AdminPanelMixin"
+    "pytclon/admin/panels/_AdminPanelMixin",
+    "dojo/text!./Users.html"
 ], function(
     declare,
     JsonRest,
@@ -23,16 +24,12 @@ define([
     Grid,
     AsyncCache,
     SingleSort,
-    _AdminPanelMixin
+    _AdminPanelMixin,
+    panelContent
 ) {
     return declare("admin/panels/Users", [ContentPane, _AdminPanelMixin], {
 
-        content:
-        '<div><button type="button" id="addUserBtn">Add</button>' +
-        '<label for="loginInput">Login: </label><input id="loginInput" />' +
-        '<label for="passInput">Password: </label><input id="passInput" /> ' +
-        ' </div>' +
-        '<div id="gridNode" style="width: 400px; height: 200px;"></div>',
+        content: panelContent,
         title: 'Users',
 
         constructor: function() {
