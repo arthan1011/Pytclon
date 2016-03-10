@@ -50,5 +50,6 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUser(User user) {
         System.out.println(user);
+        userDao.save(user);
     }
 }
