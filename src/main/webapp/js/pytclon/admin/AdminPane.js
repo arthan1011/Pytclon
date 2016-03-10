@@ -6,12 +6,6 @@ define([
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/dom",
-    "dojo/store/JsonRest",
-    "dojo/store/Memory",
-    "gridx/Grid",
-    "gridx/core/model/cache/Async",
-    "gridx/modules/SingleSort",
-    "dijit/registry",
     "dijit/layout/LayoutContainer",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
@@ -22,17 +16,14 @@ define([
     "dijit/form/ValidationTextBox",
     "pytclon/admin/AdminLeftMenu",
     "pytclon/admin/AdminStackPanel",
+    "pytclon/admin/panels/Settings",
+    "pytclon/admin/panels/NotUsers",
+    "pytclon/admin/panels/Users",
     "dojo/text!./templates/AdminPane.html"
 ], function(
     declare,
     domConstruct,
     dom,
-    JsonRest,
-    Store,
-    Grid,
-    AsyncCache,
-    SingleSort,
-    registry,
     LayoutContainer,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
@@ -43,6 +34,9 @@ define([
     ValidationTextBox,
     AdminLeftMenu,
     AdminStackPanel,
+    Settings,
+    NotUsers,
+    Users,
     template
 ) {
     return declare("admin/AdminPane", [LayoutContainer, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -52,91 +46,33 @@ define([
         _panels: [
             {
                 title: 'Users',
-                widget: new ContentPane({
-                    content:
-                    '<div><button type="button" id="addUserBtn">Add</button>' +
-                    '<label for="loginInput">Login: </label><input id="loginInput" />' +
-                    '<label for="passInput">Password: </label><input id="passInput" /> ' +
-                    ' </div>' +
-                    '<div id="gridNode" style="width: 400px; height: 200px;"></div>',
-                    title: 'Users'
-                })
+                widget: new Users
             },
             {
                 title: 'Not Users',
-                widget: new ContentPane({
-                    content: 'Not Users',
-                    title: 'Not Users'
-                })
+                widget: new NotUsers
             },
             {
                 title: 'Settings',
-                widget: new ContentPane({
-                    content: 'Settings',
-                    title: 'Settings'
-                })
+                widget: new Settings
             }
         ],
 
         postCreate: function() {
             this.stackPanel.initChildPanels(this._panels);
             this.leftMenu.initMenuItems(this._panels);
+            this.initPanels();
+        },
 
-            var restStore = new JsonRest({
-                target: '/pytclon/rest/users'
-            });
-
-            var button = new Button({
-                label: 'Add User',
-                onClick: function () {
-                    var passInput = registry.byId('passInput');
-                    var loginInput = registry.byId('loginInput');
-                    restStore.add({
-                        login: loginInput.get('value'),
-                        password: passInput.get('value'),
-                        roles: ['client']
-                    });
-                    console.debug('User Added!');
-                }
-            }, 'addUserBtn');
-            button.startup();
-            var loginInput = new ValidationTextBox({
-                required: true,
-                promptMessage: 'Enter login',
-                missingMessage: 'You should specify login!'
-            }, "loginInput");
-            loginInput.startup();
-            var passInput = new ValidationTextBox({
-                required: true,
-                promptMessage: 'Enter password',
-                missingMessage: 'You should specify password!',
-                type: 'password'
-            }, "passInput");
-            passInput.startup();
-            var columns = [
-                {field: 'id', name: 'ID'},
-                {field: 'login', name: 'Login'},
-                {field: 'roles', name: 'Roles'}
-            ];
-            var grid = new Grid({
-                cacheClass: AsyncCache,
-                store: restStore,
-                pageSize: 10,
-                structure: columns,
-                modules: [
-                    SingleSort
-                ]
-            }, 'gridNode'); //Assume we have a node with id 'gridNode'
-            grid.startup();
-
+        initPanels: function() {
+            for (var i = 0; i < this._panels.length; i++) {
+                var panel = this._panels[i];
+                panel.widget.initLayout();
+            }
         },
 
         btnClicked: function() {
             console.debug('Button clicked!');
-            /*var restStore = new JsonRest({
-                target: '/pytclon/rest/users'
-            });
-            restStore.query({login: 'arthan'}, {start: 0}).then(function(result) {console.debug(JSON.stringify(result))});*/
         }
     })
 });
