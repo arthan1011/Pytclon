@@ -61,13 +61,14 @@ input:focus {
     border-radius: 3px;
     box-shadow: none;
     transition: 0.25s;
-    display: block;
-    width: 250px;
+    display: inline;
+    width: 122px;
     margin: 0 auto;
 }
 
 .btn:hover {
     background-color: #2980B9;
+    cursor: pointer;
 }
 
 .login-link {
