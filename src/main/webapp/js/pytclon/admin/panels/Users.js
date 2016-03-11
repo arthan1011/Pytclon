@@ -38,7 +38,7 @@ define([
 
         initLayout: function() {
             var restStore = new JsonRest({
-                target: '/pytclon/rest/users'
+                target: 'rest/users'
             });
 
             var button = new Button({
