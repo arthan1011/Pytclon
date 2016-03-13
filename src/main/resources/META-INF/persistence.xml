@@ -6,7 +6,7 @@
              version="2.1">
   <persistence-unit name="primary">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>java:jboss/datasources/wflydevelopment</jta-data-source>
+    <jta-data-source>java:jboss/datasources/PytclonDB</jta-data-source>
     <properties>
       <property name="hibernate.connection.useUnicode" value="true" />
       <property name="hibernate.connection.characterEncoding" value="UTF-8" />
