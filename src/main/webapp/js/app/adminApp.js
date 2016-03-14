@@ -6,8 +6,7 @@ require([
     'dojo/parser',
     'dojo/domReady!'
 ], function(
-    parser,
-    adminLayoutFragment
+    parser
 ) {
 
 });
