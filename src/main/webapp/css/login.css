@@ -74,6 +74,11 @@ input:focus {
     cursor: pointer;
 }
 
+.btn:disabled {
+    background-color: #3cc0e0;
+    cursor: not-allowed;
+}
+
 .loginMsg {
     height: 1em;
     margin: 5px 0 5px 0;
