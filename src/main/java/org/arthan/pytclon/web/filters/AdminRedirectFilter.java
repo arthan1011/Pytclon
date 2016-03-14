@@ -10,7 +10,7 @@ import java.io.IOException;
  * Created by ashamsiev on 10.03.2016
  */
 
-@WebFilter({"/index.html"})
+@WebFilter({"/index.jsp"})
 public class AdminRedirectFilter implements Filter {
 
     @Override
@@ -24,7 +24,7 @@ public class AdminRedirectFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         if (request.isUserInRole("admin")) {
-            response.sendRedirect(request.getContextPath() + "/admin.html");
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
         } else {
             chain.doFilter(request, response);
         }

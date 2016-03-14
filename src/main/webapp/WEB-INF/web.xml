@@ -14,7 +14,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Admin Console</web-resource-name>
-            <url-pattern>/admin.html</url-pattern>
+            <url-pattern>/admin.jsp</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -53,4 +53,7 @@
     <security-role>
         <role-name>admin</role-name>
     </security-role>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

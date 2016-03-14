@@ -8,6 +8,6 @@ import org.jboss.arquillian.graphene.page.Location;
  * Project - Pytclon
  */
 
-@Location("index.html")
+@Location("index.jsp")
 public class MainPage {
 }
