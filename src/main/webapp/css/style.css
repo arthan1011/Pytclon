@@ -29,6 +29,11 @@ body {
 .login-form {
     text-align: center;
 }
+
+.login-form a {
+    text-decoration: none;
+}
+
 .control-group {
     margin-bottom: 10px;
 }

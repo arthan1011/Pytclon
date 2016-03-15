@@ -12,7 +12,7 @@ import java.io.IOException;
  * Prevents direct access to login page
  */
 
-@WebFilter("/login.html")
+@WebFilter("/login.jsp")
 public class LoginRedirectFilter implements Filter {
 
     @Override

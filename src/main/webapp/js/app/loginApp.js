@@ -69,7 +69,8 @@ require([
             name: 'loginForm',
             method: 'POST',
             action: 'j_security_check',
-            class: 'login-form'
+            class: 'login-form',
+            'accept-charset': 'utf-8'
         }, loginScreen);
 
         createUserNameGroup(form);

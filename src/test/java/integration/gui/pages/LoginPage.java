@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
  * Project - Pytclon
  */
 
-@Location("login.html")
+@Location("login.jsp")
 public class LoginPage {
 
     @FindBy(id = "username")
