@@ -49,8 +49,7 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUser(User user) {
-        System.out.println(user);
-//        userDao.save(user);
+        userDao.save(user);
     }
 
     @GET

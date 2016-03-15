@@ -95,6 +95,9 @@ require([
             domStyle.set('signInBtn', {
                 display: 'none'
             });
+            domAttr.set('loginMessage', {
+                innerHTML: 'Specify your credentials.'
+            });
         } else if (loginMode === 'sing-in') {
             domClass.add('loginScreen', 'login-sign-in');
             domStyle.set('repeatPasswordGroup', {
@@ -105,6 +108,9 @@ require([
             });
             domAttr.set(query('input[name=j_username]')[0], 'value', '');
             domAttr.set(query('input[name=j_password]')[0], 'value', '');
+            domAttr.set('loginMessage', {
+                innerHTML: 'User created. Sign in please.'
+            });
         }
 
     }
@@ -204,10 +210,10 @@ require([
             userStore.get(username)
                 .then(function(data) {
                     console.log(data, username);
-                    if (!isSignInMode() && data) {
-                        validationCallback({valid: false, message: 'User with login ' + username + ' already exists'});
-                    } else if (!username) {
+                    if (!username) {
                         validationCallback({valid: false, message: 'Username should be specified!'});
+                    } else if (!isSignInMode() && data) {
+                        validationCallback({valid: false, message: 'User with login "' + username + '" already exists'});
                     } else if (!isSignInMode() && username.length > 20) {
                         validationCallback({valid: false, message: 'Username should be no more than 20 symbols!'});
                     } else {
@@ -215,6 +221,13 @@ require([
                     }
                 });
         }
+    }
+
+    function isPasswordRepeated() {
+        var password = domAttr.get(query('input[name=j_password_repeat]')[0], 'value');
+        var repPassword = domAttr.get(query('input[name=j_password]')[0], 'value');
+        var isPasswordRepeated = password === repPassword;
+        return isPasswordRepeated;
     }
 
     function createRepeatPasswordGroup(form) {
@@ -227,7 +240,7 @@ require([
             type: 'password',
             class: 'login-field',
             placeHolder: 'repeat password',
-            name: 'j_password_repeat'
+            name: 'j_password_repeat',
         }, passwordGroup);
         var passMsg = domConstruct.create('div', {
             innerHTML: 'Password Message',
@@ -236,11 +249,7 @@ require([
         }, passwordGroup);
 
         on(passInput, 'input', function() {
-            var password = domAttr.get(passInput, 'value');
-            var repPassword = domAttr.get(query('input[name=j_password]')[0], 'value');
-            var isPasswordRepeated = password === repPassword;
-
-            if (!isPasswordRepeated) {
+            if (!isPasswordRepeated()) {
                 domStyle.set(passMsg, {
                     visibility: 'visible'
                 });
@@ -314,7 +323,17 @@ require([
             if (!isSignInMode() && password.length > 20) {
                 return {valid: false, message: 'Password should be no more than 20 symbols!'}
             }
+            if (!isSignInMode() && !isPasswordRepeated() && isRepeatPassFieldDirty()) {
+                return {valid: false, message: 'Password should be repeated!'}
+            }
             return {valid: true}
+        }
+
+        function isRepeatPassFieldDirty() {
+            var repeatPassInput = query('input[name=j_password_repeat]')[0];
+            var currentValue = domAttr.get(repeatPassInput, 'value');
+            var defaultValue = repeatPassInput.defaultValue;
+            return currentValue !== defaultValue;
         }
     }
 });
