@@ -23,6 +23,19 @@ html, body, .outerContainer {
     background-color: #e8dde7;
 }
 
+.loadingOverlay {
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    display: block;
+    background-color: #e8dde7;
+    text-align: center;
+    font-family: sans-serif;
+}
+
 /*For GridX*/
 .gridx {
     height: 100%;
