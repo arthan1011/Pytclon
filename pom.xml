@@ -157,10 +157,39 @@
 
     <profiles>
         <profile>
-            <id>arq-wildfly-managed</id>
+            <id>arq-wildfly-managed-linux</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
+                <!--<os>
+                    <family>Linux</family>
+                </os>-->
             </activation>
+            <properties>
+                <chrome.driver>/home/arthan/Programms/chromedriver</chrome.driver>
+                <chrome.binary>/opt/google/chrome</chrome.binary>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <version>8.2.1.Final</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>arq-wildfly-managed-windows</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <!--<os>
+                    <family>Windows</family>
+                </os>-->
+            </activation>
+            <properties>
+                <chrome.driver>C:\Users\ASHamsiev\Programms\chromedriver.exe</chrome.driver>
+                <chrome.binary>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</chrome.binary>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.wildfly</groupId>

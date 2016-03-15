@@ -13,8 +13,8 @@
 
     <extension qualifier="webdriver">
         <property name="browser">${browser}</property>
-        <property name="chrome.binary">/opt/google/chrome</property>
-        <property name="chromeDriverBinary">/home/arthan/Programms/chromedriver</property>
+        <property name="chrome.binary">${chrome.binary}</property>
+        <property name="chromeDriverBinary">${chrome.driver}</property>
     </extension>
 
 </arquillian>

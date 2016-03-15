@@ -14,13 +14,13 @@ import org.openqa.selenium.support.FindBy;
 @Location("login.jsp")
 public class LoginPage {
 
-    @FindBy(id = "username")
+    @FindBy(name = "j_username")
     private WebElement loginInput;
 
-    @FindBy(id = "password")
+    @FindBy(name = "j_password")
     private WebElement passwordInput;
 
-    @FindBy(id = "loginSubmit")
+    @FindBy(id = "signInBtn")
     private WebElement loginSubmit;
 
     public void login(String username, String password) {
