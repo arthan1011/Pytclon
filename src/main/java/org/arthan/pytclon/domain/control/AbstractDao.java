@@ -22,7 +22,9 @@ public abstract class AbstractDao<T extends Serializable> {
     }
 
     public T byId(Object id) {
-        return em.find(clazz, id);
+        T entity = em.find(clazz, id);
+//        em.detach(entity);
+        return entity;
     }
 
     public List<T> findAll() {

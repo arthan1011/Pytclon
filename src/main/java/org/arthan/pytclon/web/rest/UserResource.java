@@ -50,6 +50,23 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUser(User user) {
         System.out.println(user);
-        userDao.save(user);
+//        userDao.save(user);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{login}")
+    public Response getUserInfo(@PathParam("login") String userLogin) {
+        User user = userDao.byId(userLogin);
+
+        Response response;
+        if (user != null) {
+            user.setPassword(null);
+            response = Response.ok(user).build();
+        } else {
+            response =  Response.noContent().build();
+        }
+        return response;
+
     }
 }

@@ -79,6 +79,10 @@ input:focus {
     cursor: not-allowed;
 }
 
+h2 {
+    color: #9dba75;
+}
+
 .loginMsg {
     height: 1em;
     margin: 5px 0 5px 0;

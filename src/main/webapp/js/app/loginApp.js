@@ -31,6 +31,10 @@ require([
 
     };
 
+    var userStore = new JsonRest({
+        target: 'rest/users'
+    });
+
     topic.subscribe('pytclon/login/formValidity', function(input) {
         fieldsValidity[input.name] = input.valid;
 
@@ -108,10 +112,7 @@ require([
     function addUserRequest() {
         var login = domAttr.get(query('input[name=j_username]')[0], 'value');
         var pass = domAttr.get(query('input[name=j_password]')[0], 'value');
-        var jsonStore = new JsonRest({
-            target: 'rest/users'
-        });
-        jsonStore.add({
+        userStore.add({
             login: login,
             password: pass,
             roles: ['client']
@@ -169,41 +170,50 @@ require([
         }, userNameGroup);
 
         function checkUserNameValidity() {
-            var validationReport = isUserNameValid(domAttr.get(userInput, 'value'));
+            isUserNameValid(domAttr.get(userInput, 'value'), userValidationCallback);
 
-            if (!validationReport.valid) {
-                domStyle.set(userMsg, {
-                    visibility: 'visible'
-                });
-                domAttr.set(userMsg, {
-                    innerHTML: validationReport.message
-                });
-                topic.publish('pytclon/login/formValidity', {
-                    name: domAttr.get(userInput, 'name'),
-                    valid: false
-                });
-            } else {
-                domStyle.set(userMsg, {
-                    visibility: 'hidden'
-                });
-                topic.publish('pytclon/login/formValidity', {
-                    name: domAttr.get(userInput, 'name'),
-                    valid: true
-                });
+            function userValidationCallback(validationReport) {
+                if (!validationReport.valid) {
+                    domStyle.set(userMsg, {
+                        visibility: 'visible'
+                    });
+                    domAttr.set(userMsg, {
+                        innerHTML: validationReport.message
+                    });
+                    topic.publish('pytclon/login/formValidity', {
+                        name: domAttr.get(userInput, 'name'),
+                        valid: false
+                    });
+                } else {
+                    domStyle.set(userMsg, {
+                        visibility: 'hidden'
+                    });
+                    topic.publish('pytclon/login/formValidity', {
+                        name: domAttr.get(userInput, 'name'),
+                        valid: true
+                    });
+                }
             }
         }
 
         //on(userInput, 'blur', checkUserNameValidity);
         on(userInput, 'input', checkUserNameValidity);
 
-        function isUserNameValid(username) {
-            if (!username) {
-                return {valid: false, message: 'Username should be specified!'};
-            }
-            if (!isSignInMode() && username.length > 20) {
-                return {valid: false, message: 'Username should be no more than 20 symbols!'}
-            }
-            return {valid: true}
+        function isUserNameValid(username, validationCallback) {
+
+            userStore.get(username)
+                .then(function(data) {
+                    console.log(data, username);
+                    if (!isSignInMode() && data) {
+                        validationCallback({valid: false, message: 'User with login ' + username + ' already exists'});
+                    } else if (!username) {
+                        validationCallback({valid: false, message: 'Username should be specified!'});
+                    } else if (!isSignInMode() && username.length > 20) {
+                        validationCallback({valid: false, message: 'Username should be no more than 20 symbols!'});
+                    } else {
+                        validationCallback({valid: true});
+                    }
+                });
         }
     }
 
