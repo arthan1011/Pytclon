@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Error Page</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
-    <link rel="shortcut con" type="image/x-icon" href="${pageContext.request.contextPath}/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body>
 <div class="login">

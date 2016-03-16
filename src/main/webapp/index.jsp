@@ -28,7 +28,7 @@
         }
     </style>
     <link rel="stylesheet" href="webjars/dojo/1.10.4/dijit/themes/claro/claro.css">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body class="claro">
     <script>

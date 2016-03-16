@@ -171,6 +171,7 @@ require([
             name: 'j_username'
         }, userNameGroup);
         var userMsg = domConstruct.create('div', {
+            id: 'userMsg',
             innerHTML: 'UserName Message',
             style: {visibility: 'hidden'},
             class: 'loginMsg'
@@ -241,7 +242,7 @@ require([
             type: 'password',
             class: 'login-field',
             placeHolder: 'repeat password',
-            name: 'j_password_repeat',
+            name: 'j_password_repeat'
         }, passwordGroup);
         var passMsg = domConstruct.create('div', {
             innerHTML: 'Password Message',
