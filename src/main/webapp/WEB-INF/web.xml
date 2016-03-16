@@ -8,6 +8,7 @@
         <web-resource-collection>
             <web-resource-name>static resources</web-resource-name>
             <url-pattern>/css/*</url-pattern>
+            <url-pattern>/images/*</url-pattern>
             <url-pattern>*.js</url-pattern>
         </web-resource-collection>
     </security-constraint>

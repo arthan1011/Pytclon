@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/images/favicon.ico" />
 </head>
 <body>
 <script type="text/javascript" src="js/app/dojoConfig.js"></script>

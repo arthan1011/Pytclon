@@ -24,7 +24,7 @@ public class AdminRedirectFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         if (request.isUserInRole("admin")) {
-            response.sendRedirect("/admin.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin.jsp");
         } else {
             chain.doFilter(request, response);
         }

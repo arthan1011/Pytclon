@@ -58,6 +58,6 @@ public class LoginPageTestIT {
     public void should_get_error_page_on_failed_login(@InitialPage MainPage mainPage) throws Exception {
         loginPage.login("python", "wrong_password");
 
-        Assert.assertEquals("Should be on main page", "Error Page", browser.getTitle());
+        Assert.assertEquals("Should be on error page", "Error Page", browser.getTitle());
     }
 }

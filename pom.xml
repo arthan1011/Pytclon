@@ -167,6 +167,7 @@
             <properties>
                 <chrome.driver>/home/arthan/Programms/chromedriver</chrome.driver>
                 <chrome.binary>/opt/google/chrome</chrome.binary>
+                <!--<pytclon.context.root>pyt</pytclon.context.root>-->
             </properties>
             <dependencies>
                 <dependency>

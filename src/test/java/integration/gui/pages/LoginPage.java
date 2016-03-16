@@ -26,6 +26,7 @@ public class LoginPage {
     public void login(String username, String password) {
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password);
-        Graphene.guardHttp(loginSubmit).click();
+        Graphene.waitGui().until().element(loginSubmit).attribute("disabled").is().not().present();
+        Graphene.guardHttp(loginSubmit).submit();
     }
 }
