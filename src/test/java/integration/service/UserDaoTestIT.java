@@ -1,4 +1,4 @@
-package integration.gui;
+package integration.service;
 
 import com.google.common.collect.Lists;
 import integration.config.Deployments;
@@ -17,9 +17,8 @@ import javax.inject.Inject;
  * Created by ashamsiev on 16.03.2016
  */
 
-//@ApplyScriptAfter("scripts/delete_all_users.sql")
 @RunWith(Arquillian.class)
-public class UsersTestIT {
+public class UserDaoTestIT {
 
     @Inject
     UserDao userDao;

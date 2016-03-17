@@ -23,7 +23,16 @@ public class Deployments {
                 .as(WebArchive.class);
         archive.addAsResource("test-persistence.xml", "/META-INF/persistence.xml");
         archive.addAsResource("test-schema.sql", "/META-INF/create_schema.xml");
-        archive.addAsWebInfResource("test-web.xml", "web.xml");
+        return archive;
+    }
+
+    public static WebArchive createWarDeploymentTestJPA() {
+        final WebArchive archive = ShrinkWrap.create(ZipImporter.class, "pytclon_test.war")
+                .importFrom(new File("target/pytclon.war"))
+                .as(WebArchive.class);
+        archive.addAsResource("test-persistence.xml", "/META-INF/persistence.xml");
+        archive.addAsResource("test-schema.sql", "/META-INF/create_schema.xml");
+        archive.addAsWebInfResource("test-jboss-web.xml", "jboss-web.xml");
         return archive;
     }
 }

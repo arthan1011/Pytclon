@@ -99,7 +99,7 @@ require([
             domAttr.set('loginMessage', {
                 innerHTML: 'Specify your credentials.'
             });
-        } else if (loginMode === 'sing-in') {
+        } else if (loginMode === 'sign-in') {
             domClass.add('loginScreen', 'login-sign-in');
             domStyle.set('repeatPasswordGroup', {
                 display: 'none'
@@ -123,6 +123,8 @@ require([
             login: login,
             password: pass,
             roles: ['client']
+        }).then(function(data) {
+            setMode('sign-in');
         });
     }
 
@@ -155,7 +157,6 @@ require([
             } else {
                 addUserRequest();
                 console.log('new User created.');
-                setMode('sing-in');
             }
         });
     }

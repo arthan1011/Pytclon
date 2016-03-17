@@ -2,8 +2,11 @@ package integration.gui.pages;
 
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.Location;
+import org.jboss.util.graph.Graph;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Arthur Shamsiev on 23.02.16.
@@ -34,7 +37,7 @@ public class LoginPage {
     public void login(String username, String password) {
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password);
-        Graphene.waitGui().until().element(loginSubmit).attribute("disabled").is().not().present();
+        Graphene.waitGui().until().element(loginSubmit).is().enabled();
         Graphene.guardHttp(loginSubmit).submit();
     }
 
@@ -65,5 +68,15 @@ public class LoginPage {
     public String getLoginErrorMessage() {
         Graphene.waitAjax().until().element(loginErrorMessage).is().visible();
         return loginErrorMessage.getText();
+    }
+
+    public void setRepeatPassword(String repeatedPassword) {
+        passwordRepeatInput.sendKeys(repeatedPassword);
+    }
+
+    public void signUp() {
+        Graphene.waitAjax().until().element(signUpButton).is().enabled();
+        signUpButton.click();
+        Graphene.waitModel().until().element(loginSubmit).is().visible();
     }
 }

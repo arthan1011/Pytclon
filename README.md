@@ -23,3 +23,7 @@
     </security-realm>
 ### In urn:jboss:domain:undertow
     <https-listener name="https" socket-binding="https" security-realm="SSLRealm"/>
+    
+# About integration tests
+In order to successfully test new user registration and new user sign-in it is necessary to define test database,
+test security domain and make sure tables created. Also test data should be cleared in DB after each test.
