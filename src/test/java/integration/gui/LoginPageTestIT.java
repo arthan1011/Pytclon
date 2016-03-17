@@ -1,5 +1,6 @@
 package integration.gui;
 
+import integration.config.Deployments;
 import integration.gui.pages.LoginPage;
 import integration.gui.pages.MainPage;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -36,10 +37,7 @@ public class LoginPageTestIT {
 
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(ZipImporter.class, "pytclon_test.war")
-                .importFrom(new File("target/pytclon.war"))
-                .as(WebArchive.class);
-
+        return Deployments.createWarDeployment();
     }
 
     @Drone
