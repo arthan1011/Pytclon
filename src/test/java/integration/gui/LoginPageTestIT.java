@@ -101,4 +101,22 @@ public class LoginPageTestIT {
                 LOGIN_ALREADY_TAKEN_MESSAGE,
                 loginErrorMessage);
     }
+
+    @Test
+    public void should_show_error_message_if_password_is_not_repeated(
+            @InitialPage MainPage mainPage
+    ) throws Exception {
+        final String PASSWORD_IS_NOT_REPEATED_MESSAGE = "Password should be repeated!";
+
+        loginPage.enterSignUpMode();
+
+        loginPage.setPassword("test_pass");
+        loginPage.setRepeatPassword("test_pass_typo");
+
+        Assert.assertEquals(
+                "Should show password must be repeated message",
+                PASSWORD_IS_NOT_REPEATED_MESSAGE,
+                loginPage.getRepeatPasswordMessage()
+        );
+    }
 }

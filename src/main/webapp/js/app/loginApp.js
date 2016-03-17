@@ -246,6 +246,7 @@ require([
             name: 'j_password_repeat'
         }, passwordGroup);
         var passMsg = domConstruct.create('div', {
+            id: 'passRepMsg',
             innerHTML: 'Password Message',
             style: {visibility: 'hidden'},
             class: 'loginMsg'

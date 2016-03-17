@@ -33,6 +33,8 @@ public class LoginPage {
 
     @FindBy(id = "userMsg")
     private WebElement loginErrorMessage;
+    @FindBy(id = "passRepMsg")
+    private WebElement passwordRepeatErrorMessage;
 
     public void login(String username, String password) {
         loginInput.sendKeys(username);
@@ -78,5 +80,10 @@ public class LoginPage {
         Graphene.waitAjax().until().element(signUpButton).is().enabled();
         signUpButton.click();
         Graphene.waitModel().until().element(loginSubmit).is().visible();
+    }
+
+    public String getRepeatPasswordMessage() {
+        Graphene.waitAjax().until().element(passwordRepeatErrorMessage).is().visible();
+        return passwordRepeatErrorMessage.getText();
     }
 }
