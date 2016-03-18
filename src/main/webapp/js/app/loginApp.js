@@ -61,10 +61,10 @@ require([
         }
     });
 
-    createLoginForm();
+    createLoginForm('loginScreen');
 
-    function createLoginForm() {
-        var loginScreen = dom.byId('loginScreen');
+    function createLoginForm(refNode) {
+        var loginScreen = dom.byId(refNode);
         var form = domConstruct.create('form', {
             name: 'loginForm',
             method: 'POST',

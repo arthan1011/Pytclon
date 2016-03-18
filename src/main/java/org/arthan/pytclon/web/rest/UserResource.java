@@ -1,17 +1,22 @@
 package org.arthan.pytclon.web.rest;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import org.arthan.pytclon.domain.control.UserDao;
 import org.arthan.pytclon.domain.entity.User;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -20,10 +25,21 @@ import java.util.stream.Collectors;
  */
 
 @Path("/users")
-public class UserResource {
+@SessionScoped
+public class UserResource implements Serializable {
+
+    private UserDao userDao;
+
+    private List<User> users;
 
     @Inject
-    UserDao userDao;
+    @PostConstruct
+    public void init(
+           UserDao userDao
+    ) {
+        this.userDao = userDao;
+        loadUsers();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,22 +66,41 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUser(User user) {
         userDao.save(user);
+        users.add(user);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{login}")
     public Response getUserInfo(@PathParam("login") String userLogin) {
-        User user = userDao.byId(userLogin);
+        Optional<User> foundUser = findUser(userLogin);
 
         Response response;
-        if (user != null) {
+        if (foundUser.isPresent()) {
+            User user = foundUser.get();
             user.setPassword(null);
-            response = Response.ok(user).build();
+            response = Response.ok(foundUser).build();
         } else {
             response =  Response.noContent().build();
         }
         return response;
 
+    }
+
+    @VisibleForTesting
+    Optional<User> findUser(String id) {
+        Optional<User> foundUser = users.stream()
+                .filter(user -> user.getLogin().equals(id))
+                .findFirst();
+        return foundUser;
+    }
+
+    private void loadUsers() {
+        users = userDao.findAll();
+    }
+
+    @VisibleForTesting
+    void setUsers(List<User> users) {
+        this.users = users;
     }
 }

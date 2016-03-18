@@ -17,6 +17,13 @@ import java.util.List;
 @SecondaryTable(name = "user_roles", pkJoinColumns = {@PrimaryKeyJoinColumn(name = "login") })
 public class User implements Serializable {
 
+    public User() {
+    }
+
+    public User(String login) {
+        this.login = login;
+    }
+
     @Id
     @Column(name = "login")
     private String login;

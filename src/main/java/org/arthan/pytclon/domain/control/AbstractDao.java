@@ -10,7 +10,7 @@ import java.util.List;
  * Created by ashamsiev on 01.03.2016
  */
 
-public abstract class AbstractDao<T extends Serializable> {
+public abstract class AbstractDao<T extends Serializable> implements Serializable {
 
     @PersistenceContext(unitName = "primary")
     EntityManager em;
