@@ -3,70 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Main Page</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-            padding: 0;
-        }
-
-        #appLayout {
-            height: 100%;
-        }
-        #leftCol {
-            width: 14em;
-        }
-
-        .claro .demoLayout .edgePanel {
-            background-color: #d0e9fc;
-        }
-
-        #viewsChart {
-            width: 550px;
-            height: 550px;
-        }
-    </style>
     <link rel="stylesheet" href="webjars/dojo/1.10.4/dijit/themes/claro/claro.css">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="claro">
-    <script>
-        var dojoConfig = {
-            packages: [
-                {
-                    name: "pytclon",
-                    location: "../../../../js/pytclon"
-                }
-            ]
-        }
-    </script>
+    <script type="text/javascript" src="js/app/dojoConfig.js"></script>
     <script data-dojo-config="async: true, parseOnLoad: true" src="webjars/dojo/1.10.4/dojo/dojo.js.uncompressed.js"></script>
-    <script type="text/javascript">
-        require([
-                'dojo/parser',
-                'pytclon/ContentHolder',
-                'dijit/layout/ContentPane',
-                'dijit/layout/BorderContainer',
-                'dijit/registry',
-                'dojo/dom',
-                'dojo/dom-construct',
-                'dojo/on',
-                'dojo/domReady!'
-        ], function(parser, ContentHolder, ContentPane, BorderContainer, registry, dom, domConstruct, on) {
-
-            on(dom.byId('addBtn'), 'click', function() {
-                var leftContent = registry.byId('leftContent');
-                var newContent = domConstruct.create('div', {
-                    innerHTML: '<span>New User</span>'
-                });
-                leftContent.add(newContent);
-            });
-
-            var welcomeNode = dom.byId('welcome');
-            domConstruct.place('<em>Welcome to Game</em>', welcomeNode);
-        });
-    </script>
+    <script type="text/javascript" src="js/app/mainApp.js"></script>
+    <div class="loadingOverlay"><h1>Loading...</h1></div>
     <a href="logout">Log Out</a>
     <div
             id="appLayout" class="demoLayout"
@@ -99,7 +44,7 @@
                 data-dojo-type="dijit/layout/ContentPane"
                 data-dojo-props="region: 'left', splitter: true">
             Sidebar content (left)
-            <div id="leftContent" data-dojo-type="pytclon/ContentHolder"></div>
+            <div id="leftContent" data-dojo-type="pytclon/common/ContentHolder"></div>
         </div>
     </div>
 </body>

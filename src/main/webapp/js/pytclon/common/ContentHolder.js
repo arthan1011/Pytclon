@@ -15,7 +15,7 @@ define([
     _TemplatedMixin,
     template
 ) {
-    return declare("ContentHolder", [_WidgetBase, _TemplatedMixin], {
+    return declare("common/ContentHolder", [_WidgetBase, _TemplatedMixin], {
         templateString: template,
 
         add: function(node) {

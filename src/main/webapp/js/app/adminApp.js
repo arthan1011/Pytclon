@@ -8,28 +8,15 @@ require([
     'dojo/ready',
     'dojo/query',
     'dojo/dom-style',
+    'pytclon/util/overlay',
     'dojo/domReady!'
 ], function(
     parser,
     fx,
     ready,
     query,
-    domStyle
+    domStyle,
+    Overlay
 ) {
-    ready(function() {
-        var overlayNode = query('.loadingOverlay')[0];
-        fx.animateProperty({
-            node: overlayNode,
-            properties: {
-                top: '300',
-                opacity: '0'
-            },
-            onEnd: function(node) {
-                domStyle.set(node, {
-                    display: 'none'
-                });
-            }
-        }).play();
-
-    });
+    (new Overlay()).init();
 });

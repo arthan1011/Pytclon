@@ -20,7 +20,6 @@ import org.openqa.selenium.WebDriver;
  * Created by ashamsiev on 17.03.2016
  */
 @RunWith(Arquillian.class)
-@CleanupUsingScript("scripts/delete_all_users.sql")
 public class UserTestIT {
 
     @Deployment(testable = true)
@@ -57,6 +56,7 @@ public class UserTestIT {
 
     @Test
     @InSequence(2)
+    @CleanupUsingScript("scripts/delete_all_users.sql")
     public void cleanupDatabaseWorkaround() throws Exception {
         // Empty on purpose
     }
