@@ -26,6 +26,8 @@ require([
     topic,
     JsonRest
 ) {
+    const MODE_SIGN_IN = 'sign-in';
+    const MODE_SIGN_UP = 'sign-up';
 
     var fieldsValidity = {
 
@@ -78,6 +80,17 @@ require([
         createRepeatPasswordGroup(form);
 
         crateSignButtons(form);
+
+
+        // todo improved api for validating fields
+        //var inputGroup = createInputGroup("j_username");
+        //createValidationConstraint(
+        //    /*mode*/ MODE_SIGN_IN,
+        //    /*eventType*/ 'blur',
+        //    /*callbackFunction*/ function(targetInputGroup, otherNodes) {},
+        //    /*targetInputGroup*/ inputGroup,
+        //    /*otherInputGroups...*/ someOtherInputGroup
+        //)
     }
 
     function isSignInMode() {
@@ -88,7 +101,7 @@ require([
         domClass.remove('loginScreen', 'login-sign-in');
         domClass.remove('loginScreen', 'login-sign-up');
 
-        if (loginMode === 'sign-up') {
+        if (loginMode === MODE_SIGN_UP) {
             domClass.add('loginScreen', 'login-sign-up');
             domStyle.set('repeatPasswordGroup', {
                 display: 'block'
@@ -99,7 +112,7 @@ require([
             domAttr.set('loginMessage', {
                 innerHTML: 'Specify your credentials.'
             });
-        } else if (loginMode === 'sign-in') {
+        } else if (loginMode === MODE_SIGN_IN) {
             domClass.add('loginScreen', 'login-sign-in');
             domStyle.set('repeatPasswordGroup', {
                 display: 'none'
@@ -124,7 +137,7 @@ require([
             password: pass,
             roles: ['client']
         }).then(function(data) {
-            setMode('sign-in');
+            setMode(MODE_SIGN_IN);
         });
     }
 
@@ -153,7 +166,7 @@ require([
                 domAttr.set(signUpBtn, {
                     disabled: true
                 });
-                setMode('sign-up');
+                setMode(MODE_SIGN_UP);
             } else {
                 addUserRequest();
                 console.log('new User created.');
