@@ -2,11 +2,8 @@ package integration.gui.pages;
 
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.Location;
-import org.jboss.util.graph.Graph;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Arthur Shamsiev on 23.02.16.
