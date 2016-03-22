@@ -14,6 +14,7 @@ require([
     'dojo/topic',
     'dojo/store/JsonRest',
     'pytclon/util/deferred',
+    'pytclon/common/domClasses',
     'dojo/promise/all',
     'dojo/domReady!'
 ], function(
@@ -28,6 +29,7 @@ require([
     topic,
     JsonRest,
     utilDeferred,
+    domClasses,
     all
 ) {
     const MODE_SIGN_IN = 'sign-in';
@@ -348,17 +350,17 @@ require([
 
     function createInputGroup(rootNode, options) {
         var groupContainer = domConstruct.create('div', {
-            class: 'control-group'
+            class: domClasses.INPUT_GROUP
         }, rootNode);
         var inputField = domConstruct.create('input', {
             type: 'text',
-            class: 'login-field',
+            class: domClasses.INPUT_FIELD,
             placeHolder: options.placeHolder || 'type here',
             name: options.name || 'inputName'
         }, groupContainer);
         var inputMsg = domConstruct.create('div', {
             style: {visibility: 'hidden'},
-            class: 'loginMsg'
+            class: domClasses.INPUT_VALIDATION_MSG
         }, groupContainer);
 
         return {
