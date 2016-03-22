@@ -13,7 +13,7 @@ require([
     'dojo/request',
     'dojo/topic',
     'dojo/store/JsonRest',
-    'dojo/Deferred',
+    'pytclon/util/deferred',
     'dojo/promise/all',
     'dojo/domReady!'
 ], function(
@@ -27,7 +27,7 @@ require([
     request,
     topic,
     JsonRest,
-    Deferred,
+    utilDeferred,
     all
 ) {
     const MODE_SIGN_IN = 'sign-in';
@@ -103,9 +103,7 @@ require([
                             {
                                 mode: undefined,
                                 validator: function(targetInputGroup) {
-                                    var deferred = new Deferred();
-                                    deferred.resolve();
-                                    return deferred.then(function() {
+                                    return utilDeferred.wrapFunc(function() {
                                         if (!domAttr.get(targetInputGroup.field, 'value')) {
                                             return {
                                                 valid: false,
@@ -127,9 +125,7 @@ require([
                             {
                                 mode: MODE_SIGN_UP,
                                 validator: function(targetInputGroup) {
-                                    var deferred = new Deferred();
-                                    deferred.resolve();
-                                    return deferred.then(function() {
+                                    return utilDeferred.wrapFunc(function() {
                                         if (domAttr.get(targetInputGroup.field, 'value').length > 20) {
                                             return {
                                                 valid: false,
@@ -148,9 +144,8 @@ require([
                                 mode: MODE_SIGN_UP,
                                 validator: function(targetInputGroup) {
                                     var username = domAttr.get(targetInputGroup.field, 'value');
-                                    var deferred;
                                     if (username) {
-                                        deferred = userStore.get(username)
+                                        return userStore.get(username)
                                             .then(function (data) {
                                                 if (data) {
                                                     return {
@@ -164,15 +159,8 @@ require([
                                                 }
                                             }
                                         );
-                                        return deferred;
                                     } else {
-                                        deferred = new Deferred();
-                                        deferred.resolve();
-                                        return deferred.then(function() {
-                                            return {
-                                                valid: true
-                                            }
-                                        });
+                                        return utilDeferred.wrapVal({valid: true});
                                     }
                                 }
                             }
