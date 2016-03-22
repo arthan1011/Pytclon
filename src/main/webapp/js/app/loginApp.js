@@ -43,6 +43,58 @@ require([
 
     };
 
+    var validators = {
+        noMore20Symbols: function(targetInputGroup) {
+            return utilDeferred.wrapFunc(function() {
+                if (domProp.get(targetInputGroup.field, 'value').length > 20) {
+                    return {
+                        valid: false,
+                        msg: targetInputGroup.title + ' should be no more than 20 symbols!'
+                    }
+                } else {
+                    return {
+                        valid: true
+                    }
+                }
+            });
+        },
+        required: function(targetInputGroup) {
+            return utilDeferred.wrapFunc(function() {
+                if (!domProp.get(targetInputGroup.field, 'value')) {
+                    return {
+                        valid: false,
+                        msg: targetInputGroup.title + ' should be specified!'
+                    }
+                } else {
+                    return {
+                        valid: true
+                    }
+                }
+            });
+        },
+        userExists: function(targetInputGroup) {
+            var username = domProp.get(targetInputGroup.field, 'value');
+            if (username) {
+                return userStore.get(username)
+                    .then(function (data) {
+                        if (data) {
+                            return {
+                                valid: false,
+                                msg: 'User with login "' + username + '" already exists!'
+                            }
+                        } else {
+                            return {
+                                valid: true
+                            };
+                        }
+                    }
+                );
+            } else {
+                return utilDeferred.wrapVal({valid: true});
+            }
+        }
+    };
+
     var userStore = new JsonRest({
         target: 'rest/users'
     });
@@ -88,7 +140,8 @@ require([
         //createUserNameGroup(form);
         var userInputGroup = createInputGroup(form, {
             name: "j_username",
-            placeHolder: 'login'
+            placeHolder: 'login',
+            title: 'Username'
         });
         createPasswordGroup(form);
         createRepeatPasswordGroup(form);
@@ -104,20 +157,16 @@ require([
                         validations: [
                             {
                                 mode: undefined,
-                                validator: function(targetInputGroup) {
-                                    return utilDeferred.wrapFunc(function() {
-                                        if (!domProp.get(targetInputGroup.field, 'value')) {
-                                            return {
-                                                valid: false,
-                                                msg: 'Username should be specified!'
-                                            }
-                                        } else {
-                                            return {
-                                                valid: true
-                                            }
-                                        }
-                                    });
-                                }
+                                validator: validators.required
+                            },
+                            {
+                                mode: MODE_SIGN_UP,
+                                validator: validators.noMore20Symbols,
+                                otherInputGroups: []
+                            },
+                            {
+                                mode: MODE_SIGN_UP,
+                                validator: validators.userExists
                             }
                         ]
                     },
@@ -126,67 +175,19 @@ require([
                         validations: [
                             {
                                 mode: MODE_SIGN_UP,
-                                validator: function(targetInputGroup) {
-                                    return utilDeferred.wrapFunc(function() {
-                                        if (domProp.get(targetInputGroup.field, 'value').length > 20) {
-                                            return {
-                                                valid: false,
-                                                msg: 'Username should be no more than 20 symbols!'
-                                            }
-                                        } else {
-                                            return {
-                                                valid: true
-                                            }
-                                        }
-                                    });
-                                },
+                                validator: validators.noMore20Symbols,
                                 otherInputGroups: []
                             },
                             {
                                 mode: MODE_SIGN_UP,
-                                validator: function(targetInputGroup) {
-                                    var username = domProp.get(targetInputGroup.field, 'value');
-                                    if (username) {
-                                        return userStore.get(username)
-                                            .then(function (data) {
-                                                if (data) {
-                                                    return {
-                                                        valid: false,
-                                                        msg: 'User with login "' + username + '" already exists!'
-                                                    }
-                                                } else {
-                                                    return {
-                                                        valid: true
-                                                    };
-                                                }
-                                            }
-                                        );
-                                    } else {
-                                        return utilDeferred.wrapVal({valid: true});
-                                    }
-                                }
+                                validator: validators.userExists
                             }
                         ]
                     }
                 ]
             }
-            //{
-            //    inputGroup: passwordInputGroup,
-            //    constraints: [
-            //        {
-            //            event
-            //        }
-            //    ]
-            //}
-        ]);
 
-        //createValidationConstraint(
-        //    /*mode*/ MODE_SIGN_IN,
-        //    /*eventType*/ 'blur',
-        //    /*callbackFunction*/ function(targetInputGroup, otherNodes) {},
-        //    /*targetInputGroup*/ inputGroup,
-        //    /*otherInputGroups...*/ someOtherInputGroup
-        //)
+        ]);
     }
 
     function setupValidationConstraints(allConstraints) {
@@ -363,6 +364,7 @@ require([
         }, groupContainer);
 
         return {
+            title: options.title,
             field:inputField,
             message: inputMsg
         };
