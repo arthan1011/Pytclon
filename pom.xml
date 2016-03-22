@@ -174,7 +174,7 @@
             <properties>
                 <chrome.driver>/home/arthan/Programms/chromedriver</chrome.driver>
                 <chrome.binary>/opt/google/chrome</chrome.binary>
-                <!--<pytclon.context.root>pyt</pytclon.context.root>-->
+                <pytclon.context.root>pyt</pytclon.context.root>
             </properties>
             <dependencies>
                 <dependency>
@@ -197,6 +197,7 @@
             <properties>
                 <chrome.driver>C:\Users\ASHamsiev\Programms\chromedriver.exe</chrome.driver>
                 <chrome.binary>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</chrome.binary>
+                <pytclon.context.root>pytclon</pytclon.context.root>
             </properties>
             <dependencies>
                 <dependency>
