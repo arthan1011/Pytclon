@@ -7,7 +7,7 @@ require([
     'dojo/dom',
     'dojo/on',
     'dojo/dom-style',
-    'dojo/dom-attr',
+    'dojo/dom-prop',
     'dojo/dom-class',
     'dojo/query',
     'dojo/request',
@@ -22,7 +22,7 @@ require([
     dom,
     on,
     domStyle,
-    domAttr,
+    domProp,
     domClass,
     query,
     request,
@@ -52,21 +52,21 @@ require([
 
         if (isSignInMode()) {
             if (fieldsValidity.j_username && fieldsValidity.j_password) {
-                domAttr.set('signInBtn', {
+                domProp.set('signInBtn', {
                     disabled: false
                 })
             } else {
-                domAttr.set('signInBtn', {
+                domProp.set('signInBtn', {
                     disabled: true
                 })
             }
         } else {
             if (fieldsValidity.j_username && fieldsValidity.j_password && fieldsValidity.j_password_repeat) {
-                domAttr.set('signUpBtn', {
+                domProp.set('signUpBtn', {
                     disabled: false
                 })
             } else {
-                domAttr.set('signUpBtn', {
+                domProp.set('signUpBtn', {
                     disabled: true
                 })
             }
@@ -106,7 +106,7 @@ require([
                                 mode: undefined,
                                 validator: function(targetInputGroup) {
                                     return utilDeferred.wrapFunc(function() {
-                                        if (!domAttr.get(targetInputGroup.field, 'value')) {
+                                        if (!domProp.get(targetInputGroup.field, 'value')) {
                                             return {
                                                 valid: false,
                                                 msg: 'Username should be specified!'
@@ -128,7 +128,7 @@ require([
                                 mode: MODE_SIGN_UP,
                                 validator: function(targetInputGroup) {
                                     return utilDeferred.wrapFunc(function() {
-                                        if (domAttr.get(targetInputGroup.field, 'value').length > 20) {
+                                        if (domProp.get(targetInputGroup.field, 'value').length > 20) {
                                             return {
                                                 valid: false,
                                                 msg: 'Username should be no more than 20 symbols!'
@@ -145,7 +145,7 @@ require([
                             {
                                 mode: MODE_SIGN_UP,
                                 validator: function(targetInputGroup) {
-                                    var username = domAttr.get(targetInputGroup.field, 'value');
+                                    var username = domProp.get(targetInputGroup.field, 'value');
                                     if (username) {
                                         return userStore.get(username)
                                             .then(function (data) {
@@ -193,37 +193,36 @@ require([
         allConstraints.forEach(function(groupConstrains) {
             groupConstrains.constraints.forEach(function(typeConstraints) {
                 var inputGroup = groupConstrains.inputGroup;
+                var validReportHandler = function(validReport) {
+                    if (!validReport.valid) {
+
+                        // show message
+                        domStyle.set(inputGroup.message, {
+                            visibility: 'visible'
+                        });
+                        domProp.set(inputGroup.message, {
+                            innerHTML: validReport.msg
+                        });
+                        topic.publish('pytclon/login/formValidity', {
+                            name: domProp.get(inputGroup.field, 'name'),
+                            valid: false
+                        });
+                    } else {
+                        // hide message
+                        domStyle.set(inputGroup.message, {
+                            visibility: 'hidden'
+                        });
+                        topic.publish('pytclon/login/formValidity', {
+                            name: domProp.get(inputGroup.field, 'name'),
+                            valid: false
+                        });
+                    }
+                };
                 on(
                     inputGroup.field,
                     typeConstraints.eventType,
                     function() {
                         validateConstraints(inputGroup, typeConstraints.validations, validReportHandler);
-
-                        function validReportHandler(validReport) {
-                            if (!validReport.valid) {
-
-                                // show message
-                                domStyle.set(inputGroup.message, {
-                                    visibility: 'visible'
-                                });
-                                domAttr.set(inputGroup.message, {
-                                    innerHTML: validReport.msg
-                                });
-                                topic.publish('pytclon/login/formValidity', {
-                                    name: domAttr.get(inputGroup.field, 'name'),
-                                    valid: false
-                                });
-                            } else {
-                                // hide message
-                                domStyle.set(inputGroup.message, {
-                                    visibility: 'hidden'
-                                });
-                                topic.publish('pytclon/login/formValidity', {
-                                    name: domAttr.get(inputGroup.field, 'name'),
-                                    valid: false
-                                });
-                            }
-                        }
                     }
                 );
             });
@@ -283,7 +282,7 @@ require([
             domStyle.set('signInBtn', {
                 display: 'none'
             });
-            domAttr.set('loginMessage', {
+            domProp.set('loginMessage', {
                 innerHTML: 'Specify your credentials.'
             });
         } else if (loginMode === MODE_SIGN_IN) {
@@ -294,9 +293,9 @@ require([
             domStyle.set('signInBtn', {
                 display: 'inline'
             });
-            domAttr.set(query('input[name=j_username]')[0], 'value', '');
-            domAttr.set(query('input[name=j_password]')[0], 'value', '');
-            domAttr.set('loginMessage', {
+            domProp.set(query('input[name=j_username]')[0], 'value', '');
+            domProp.set(query('input[name=j_password]')[0], 'value', '');
+            domProp.set('loginMessage', {
                 innerHTML: 'User created. Sign in please.'
             });
         }
@@ -304,8 +303,8 @@ require([
     }
 
     function addUserRequest() {
-        var login = domAttr.get(query('input[name=j_username]')[0], 'value');
-        var pass = domAttr.get(query('input[name=j_password]')[0], 'value');
+        var login = domProp.get(query('input[name=j_username]')[0], 'value');
+        var pass = domProp.get(query('input[name=j_password]')[0], 'value');
         userStore.add({
             login: login,
             password: pass,
@@ -337,7 +336,7 @@ require([
 
         on(signUpBtn, 'click', function() {
             if (isSignInMode()) {
-                domAttr.set(signUpBtn, {
+                domProp.set(signUpBtn, {
                     disabled: true
                 });
                 setMode(MODE_SIGN_UP);
@@ -387,18 +386,18 @@ require([
         }, userNameGroup);
 
         function checkUserNameValidity() {
-            isUserNameValid(domAttr.get(userInput, 'value'), userValidationCallback);
+            isUserNameValid(domProp.get(userInput, 'value'), userValidationCallback);
 
             function userValidationCallback(validationReport) {
                 if (!validationReport.valid) {
                     domStyle.set(userMsg, {
                         visibility: 'visible'
                     });
-                    domAttr.set(userMsg, {
+                    domProp.set(userMsg, {
                         innerHTML: validationReport.message
                     });
                     topic.publish('pytclon/login/formValidity', {
-                        name: domAttr.get(userInput, 'name'),
+                        name: domProp.get(userInput, 'name'),
                         valid: false
                     });
                 } else {
@@ -406,7 +405,7 @@ require([
                         visibility: 'hidden'
                     });
                     topic.publish('pytclon/login/formValidity', {
-                        name: domAttr.get(userInput, 'name'),
+                        name: domProp.get(userInput, 'name'),
                         valid: true
                     });
                 }
@@ -435,8 +434,8 @@ require([
     }
 
     function isPasswordRepeated() {
-        var password = domAttr.get(query('input[name=j_password_repeat]')[0], 'value');
-        var repPassword = domAttr.get(query('input[name=j_password]')[0], 'value');
+        var password = domProp.get(query('input[name=j_password_repeat]')[0], 'value');
+        var repPassword = domProp.get(query('input[name=j_password]')[0], 'value');
         var isPasswordRepeated = password === repPassword;
         return isPasswordRepeated;
     }
@@ -465,11 +464,11 @@ require([
                 domStyle.set(passMsg, {
                     visibility: 'visible'
                 });
-                domAttr.set(passMsg, {
+                domProp.set(passMsg, {
                     innerHTML: 'Password should be repeated!'
                 });
                 topic.publish('pytclon/login/formValidity', {
-                    name: domAttr.get(passInput, 'name'),
+                    name: domProp.get(passInput, 'name'),
                     valid: false
                 });
             } else {
@@ -477,7 +476,7 @@ require([
                     visibility: 'hidden'
                 });
                 topic.publish('pytclon/login/formValidity', {
-                    name: domAttr.get(passInput, 'name'),
+                    name: domProp.get(passInput, 'name'),
                     valid: true
                 });
             }
@@ -501,17 +500,17 @@ require([
         }, passwordGroup);
 
         function checkPasswordValidity() {
-            var validationReport = isPasswordValid(domAttr.get(passInput, 'value'));
+            var validationReport = isPasswordValid(domProp.get(passInput, 'value'));
 
             if (!validationReport.valid) {
                 domStyle.set(passMsg, {
                     visibility: 'visible'
                 });
-                domAttr.set(passMsg, {
+                domProp.set(passMsg, {
                     innerHTML: validationReport.message
                 });
                 topic.publish('pytclon/login/formValidity', {
-                    name: domAttr.get(passInput, 'name'),
+                    name: domProp.get(passInput, 'name'),
                     valid: false
                 });
             } else {
@@ -519,7 +518,7 @@ require([
                     visibility: 'hidden'
                 });
                 topic.publish('pytclon/login/formValidity', {
-                    name: domAttr.get(passInput, 'name'),
+                    name: domProp.get(passInput, 'name'),
                     valid: true
                 });
             }
@@ -543,7 +542,7 @@ require([
 
         function isRepeatPassFieldDirty() {
             var repeatPassInput = query('input[name=j_password_repeat]')[0];
-            var currentValue = domAttr.get(repeatPassInput, 'value');
+            var currentValue = domProp.get(repeatPassInput, 'value');
             var defaultValue = repeatPassInput.defaultValue;
             return currentValue !== defaultValue;
         }
