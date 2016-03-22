@@ -13,6 +13,8 @@ require([
     'dojo/request',
     'dojo/topic',
     'dojo/store/JsonRest',
+    'dojo/Deferred',
+    'dojo/promise/all',
     'dojo/domReady!'
 ], function(
     domConstruct,
@@ -24,12 +26,18 @@ require([
     query,
     request,
     topic,
-    JsonRest
+    JsonRest,
+    Deferred,
+    all
 ) {
     const MODE_SIGN_IN = 'sign-in';
     const MODE_SIGN_UP = 'sign-up';
 
     var fieldsValidity = {
+
+    };
+
+    var validationConstraints = {
 
     };
 
@@ -75,15 +83,113 @@ require([
             'accept-charset': 'utf-8'
         }, loginScreen);
 
-        createUserNameGroup(form);
+        //createUserNameGroup(form);
+        var userInputGroup = createInputGroup(form, {
+            name: "j_username",
+            placeHolder: 'login'
+        });
         createPasswordGroup(form);
         createRepeatPasswordGroup(form);
 
         crateSignButtons(form);
 
+        setupValidationConstraints([
+            {
+                inputGroup: userInputGroup,
+                constraints: [
+                    {
+                        eventType: 'blur',
+                        validations: [
+                            {
+                                mode: undefined,
+                                validator: function(targetInputGroup) {
+                                    var deferred = new Deferred();
+                                    deferred.resolve();
+                                    return deferred.then(function() {
+                                        if (!domAttr.get(targetInputGroup.field, 'value')) {
+                                            return {
+                                                valid: false,
+                                                msg: 'Username should be specified!'
+                                            }
+                                        } else {
+                                            return {
+                                                valid: true
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'input',
+                        validations: [
+                            {
+                                mode: MODE_SIGN_UP,
+                                validator: function(targetInputGroup) {
+                                    var deferred = new Deferred();
+                                    deferred.resolve();
+                                    return deferred.then(function() {
+                                        if (domAttr.get(targetInputGroup.field, 'value').length > 20) {
+                                            return {
+                                                valid: false,
+                                                msg: 'Username should be no more than 20 symbols!'
+                                            }
+                                        } else {
+                                            return {
+                                                valid: true
+                                            }
+                                        }
+                                    });
+                                },
+                                otherInputGroups: []
+                            },
+                            {
+                                mode: MODE_SIGN_UP,
+                                validator: function(targetInputGroup) {
+                                    var username = domAttr.get(targetInputGroup.field, 'value');
+                                    var deferred;
+                                    if (username) {
+                                        deferred = userStore.get(username)
+                                            .then(function (data) {
+                                                if (data) {
+                                                    return {
+                                                        valid: false,
+                                                        msg: 'User with login "' + username + '" already exists!'
+                                                    }
+                                                } else {
+                                                    return {
+                                                        valid: true
+                                                    };
+                                                }
+                                            }
+                                        );
+                                        return deferred;
+                                    } else {
+                                        deferred = new Deferred();
+                                        deferred.resolve();
+                                        return deferred.then(function() {
+                                            return {
+                                                valid: true
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+            //{
+            //    inputGroup: passwordInputGroup,
+            //    constraints: [
+            //        {
+            //            event
+            //        }
+            //    ]
+            //}
+        ]);
 
-        // todo improved api for validating fields
-        //var inputGroup = createInputGroup("j_username");
         //createValidationConstraint(
         //    /*mode*/ MODE_SIGN_IN,
         //    /*eventType*/ 'blur',
@@ -93,8 +199,86 @@ require([
         //)
     }
 
+    function setupValidationConstraints(allConstraints) {
+        allConstraints.forEach(function(groupConstrains) {
+            groupConstrains.constraints.forEach(function(typeConstraints) {
+                var inputGroup = groupConstrains.inputGroup;
+                on(
+                    inputGroup.field,
+                    typeConstraints.eventType,
+                    function() {
+                        validateConstraints(inputGroup, typeConstraints.validations, validReportHandler);
+
+                        function validReportHandler(validReport) {
+                            if (!validReport.valid) {
+
+                                // show message
+                                domStyle.set(inputGroup.message, {
+                                    visibility: 'visible'
+                                });
+                                domAttr.set(inputGroup.message, {
+                                    innerHTML: validReport.msg
+                                });
+                                topic.publish('pytclon/login/formValidity', {
+                                    name: domAttr.get(inputGroup.field, 'name'),
+                                    valid: false
+                                });
+                            } else {
+                                // hide message
+                                domStyle.set(inputGroup.message, {
+                                    visibility: 'hidden'
+                                });
+                                topic.publish('pytclon/login/formValidity', {
+                                    name: domAttr.get(inputGroup.field, 'name'),
+                                    valid: false
+                                });
+                            }
+                        }
+                    }
+                );
+            });
+        });
+
+        function validateConstraints(targetGroup, validations, reportHandler) {
+            var promises = [];
+
+            for (var i = 0; i < validations.length; i++) {
+                var constraint = validations[i];
+                if (!constraint.mode || isInMode(constraint.mode)) {
+                    promises.push(
+                        constraint.validator.apply(
+                            null,
+                            [targetGroup].concat(constraint.otherInputGroups)
+                        )
+                    );
+                }
+            }
+
+            all(promises).then(function(validReports) {
+                var valid = true;
+
+                for (var i = 0; i < validReports.length; i++) {
+                    var validReport = validReports[i];
+                    if (!validReport.valid) {
+                        reportHandler(validReport);
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid) {
+                    reportHandler({valid: true});
+                }
+            });
+        }
+    }
+
     function isSignInMode() {
         return domClass.contains('loginScreen', 'login-sign-in');
+    }
+
+    function isInMode(mode) {
+        return domClass.contains('loginScreen', 'login-' + mode);
     }
 
     function setMode(loginMode) {
@@ -172,6 +356,27 @@ require([
                 console.log('new User created.');
             }
         });
+    }
+
+    function createInputGroup(rootNode, options) {
+        var groupContainer = domConstruct.create('div', {
+            class: 'control-group'
+        }, rootNode);
+        var inputField = domConstruct.create('input', {
+            type: 'text',
+            class: 'login-field',
+            placeHolder: options.placeHolder || 'type here',
+            name: options.name || 'inputName'
+        }, groupContainer);
+        var inputMsg = domConstruct.create('div', {
+            style: {visibility: 'hidden'},
+            class: 'loginMsg'
+        }, groupContainer);
+
+        return {
+            field:inputField,
+            message: inputMsg
+        };
     }
 
     function createUserNameGroup(loginScreen) {
