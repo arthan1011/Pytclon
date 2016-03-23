@@ -92,6 +92,7 @@ h2 {
     height: 1em;
     margin: 5px 0 5px 0;
     color: #ff2424;
+    visibility: hidden;
 }
 
 .login-link {
@@ -99,4 +100,8 @@ h2 {
     color: #444;
     display: block;
     margin-top: 12px;
+}
+
+.pt-form-invalid .pt-input-invalid .loginMsg {
+    visibility: visible;
 }
