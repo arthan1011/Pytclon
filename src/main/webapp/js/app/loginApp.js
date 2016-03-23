@@ -635,13 +635,23 @@ require([
             this.validCallbacks[mode] = callback;
         },
 
+        setOnInvalid: function(mode, callback) {
+            this.invalidCallbacks[mode] = callback;
+        },
+
         _setFormValidity: function (valid) {
             if (valid) {
-                domClass.add(this.form, domClasses.FORM_VALID);
-                domClass.remove(this.form, domClasses.FORM_INVALID);
+                domClass.add(this.form, domClasses.FORM_VALID, domClasses.FORM_INVALID);
+                var validCallback = this.validCallbacks[this.mode];
+                if (validCallback) {
+                    validCallback();
+                }
             } else {
-                domClass.add(this.form, domClasses.FORM_INVALID);
-                domClass.remove(this.form, domClasses.FORM_VALID);
+                domClass.add(this.form, domClasses.FORM_INVALID, domClasses.FORM_VALID);
+                var invalidCallback = this.invalidCallbacks[this.mode];
+                if (invalidCallback) {
+                    invalidCallback();
+                }
             }
         },
 
@@ -709,7 +719,7 @@ require([
                 name: 'loginForm',
                 method: 'POST',
                 action: 'j_security_check',
-                class: 'login-form',
+                class: ['login-form', domClasses.FORM_VALID].join(' '),
                 'accept-charset': 'utf-8'
             });
         }
@@ -743,5 +753,8 @@ require([
     inputForm.setOnValid(MODE_SIGN_IN, function() {
         alert('all fields are valid');
     });
+    inputForm.setOnInvalid(MODE_SIGN_IN, function() {
+        console.log('form is still invalid');
+    })
 
 });
