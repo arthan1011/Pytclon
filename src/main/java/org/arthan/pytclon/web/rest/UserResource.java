@@ -71,7 +71,10 @@ public class UserResource implements Serializable {
             users.add(user);
             return Response.created(URI.create(user.getLogin())).build();
         } else {
-            return Response.status(Response.Status.CONFLICT).build();
+            return Response
+                    .status(Response.Status.CONFLICT)
+                    .entity("User with name " + user.getLogin() + " already exists!")
+                    .build();
         }
     }
 
@@ -87,7 +90,10 @@ public class UserResource implements Serializable {
             user.setPassword(null);
             response = Response.ok(foundUser).build();
         } else {
-            response =  Response.noContent().build();
+            response =  Response
+                    .noContent()
+                    .entity("User with name " + userLogin + " not found")
+                    .build();
         }
         return response;
 

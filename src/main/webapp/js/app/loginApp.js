@@ -160,17 +160,6 @@ require([
             }
         };
 
-        /*on(signUpBtn, 'click', function() {
-            if (isSignInMode()) {
-                domProp.set(signUpBtn, {
-                    disabled: true
-                });
-                setMode(MODE_SIGN_UP);
-            } else {
-                addUserRequest();
-                console.log('new User created.');
-            }
-        });*/
     }
 
 
@@ -254,10 +243,6 @@ require([
             };
             this.inputGroups.push(inputGroupInstance);
             return inputGroupInstance;
-        },
-
-        printGroups: function() {
-            console.log(this.inputGroups);
         },
 
         setMode: function(mode) {
@@ -423,21 +408,16 @@ require([
         }
     ]);
 
-    inputForm.printGroups();
     inputForm.setOnValid(MODE_SIGN_IN, function() {
-        console.log('form is valid');
         domProp.set(loginButtons.signInBtn, 'disabled', false);
     });
     inputForm.setOnInvalid(MODE_SIGN_IN, function() {
-        console.log('form is still invalid');
         domProp.set(loginButtons.signInBtn, 'disabled', true);
     });
     inputForm.setOnValid(MODE_SIGN_UP, function() {
-        console.log('New user is ready for registration');
         domProp.set(loginButtons.signUpBtn, 'disabled', false);
     });
     inputForm.setOnInvalid(MODE_SIGN_UP, function() {
-        console.log('User credentials for registration are not specified');
         domProp.set(loginButtons.signUpBtn, 'disabled', true);
     });
 
@@ -454,6 +434,10 @@ require([
                 roles: ['client']
             }).then(function(data) {
                 inputForm.setMode(MODE_SIGN_IN);
+            }, function(error) {
+                alert(error.responseText);
+                inputForm.clear();
+                domProp.set(loginButtons.signUpBtn, 'disabled', true);
             });
         }
     })
