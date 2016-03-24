@@ -48,6 +48,7 @@ require([
     var validators = {
         max20Symbols: function(targetInputGroup) {
             return utilDeferred.wrapFunc(function() {
+                var self = this;
                 if (domProp.get(targetInputGroup.field, 'value').length > 20) {
                     return {
                         valid: false,
@@ -59,6 +60,23 @@ require([
                     }
                 }
             });
+        },
+        maxLength: function(limit) {
+            return function() {
+                var self = this;
+                return utilDeferred.wrapFunc(function() {
+                    if (domProp.get(self.field, 'value').length > limit) {
+                        return {
+                            valid: false,
+                            msg: self.title + ' should be no more than ' + limit + ' symbols!'
+                        }
+                    } else {
+                        return {
+                            valid: true
+                        }
+                    }
+                });
+            }
         },
         required: function() {
             var self = this;
@@ -128,7 +146,7 @@ require([
         }
     });
 
-    createLoginForm('loginScreen');
+    //createLoginForm('loginScreen');
 
     function createLoginForm(refNode) {
         var loginScreen = dom.byId(refNode);
@@ -323,7 +341,7 @@ require([
         var signInBtn = domConstruct.create('button', {
             id: 'signInBtn',
             type: 'submit',
-            class: 'btn',
+            class: ['btn', domClasses.BUTTON_SHOW_IN_MODE_SIGN_IN, domClasses.DEPENDS_ON_FORM_VALIDITY].join(' '),
             innerHTML: 'Sign In',
             disabled: true
         }, domConstruct.create('span', {
@@ -341,6 +359,7 @@ require([
 
 
         return {
+            signInBtn: signInBtn,
             setOnSignUp: function(callback) {
                 on(signUpBtn, 'click', callback);
             }
@@ -667,13 +686,13 @@ require([
 
         _setFormValidity: function (valid) {
             if (valid) {
-                domClass.add(this.form, domClasses.FORM_VALID, domClasses.FORM_INVALID);
+                domClass.replace(this.form, domClasses.FORM_VALID, domClasses.FORM_INVALID);
                 var validCallback = this.validCallbacks[this.mode];
                 if (validCallback) {
                     validCallback();
                 }
             } else {
-                domClass.add(this.form, domClasses.FORM_INVALID, domClasses.FORM_VALID);
+                domClass.replace(this.form, domClasses.FORM_INVALID, domClasses.FORM_VALID);
                 var invalidCallback = this.invalidCallbacks[this.mode];
                 if (invalidCallback) {
                     invalidCallback();
@@ -762,17 +781,23 @@ require([
     var passwordGroup = inputForm.createInputGroup({
         title: 'Password',
         name: 'j_password',
+        type: 'password',
         placeHolder: 'password'
     });
     var passwordRepeatGroup = inputForm.createInputGroup({
         title: 'Repeat password',
         name: 'j_password_repeat',
+        type: 'password',
         placeHolder: 'repeat password',
         showInMode: MODE_SIGN_UP
     });
     userGroup.setConstraints([
         {
             validator: validators.required
+        },
+        {
+            validator: validators.maxLength(15),
+            mode: MODE_SIGN_UP
         }
     ]);
     passwordGroup.setConstraints([
@@ -783,13 +808,21 @@ require([
 
     inputForm.printGroups();
     inputForm.setOnValid(MODE_SIGN_IN, function() {
-        alert('all fields are valid');
+        console.log('form is valid');
+        domProp.set(loginButtons.signInBtn, 'disabled', false);
     });
     inputForm.setOnInvalid(MODE_SIGN_IN, function() {
         console.log('form is still invalid');
+        domProp.set(loginButtons.signInBtn, 'disabled', true);
+    });
+    inputForm.setOnValid(MODE_SIGN_UP, function() {
+        console.log('New user is ready for registration');
+    });
+    inputForm.setOnInvalid(MODE_SIGN_UP, function() {
+        console.log('User credentials for registration are not specified');
     });
 
-    var loginButtons = crateSignButtons('loginScreen');
+    var loginButtons = crateSignButtons(inputForm.form);
     loginButtons.setOnSignUp(function() {
 
         if (inputForm.mode === MODE_SIGN_IN) {

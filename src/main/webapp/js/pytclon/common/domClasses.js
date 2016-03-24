@@ -14,6 +14,8 @@ define(function() {
         FORM_MODE_SIGN_IN: 'pt-form-mode-sign-in',
         FORM_MODE_SIGN_UP: 'pt-form-mode-sign-up',
         INPUT_SHOW_IN_MODE_SIGN_IN: 'pt-input-show-mode-sign-in',
-        INPUT_SHOW_IN_MODE_SIGN_UP: 'pt-input-show-mode-sign-up'
+        INPUT_SHOW_IN_MODE_SIGN_UP: 'pt-input-show-mode-sign-up',
+        BUTTON_SHOW_IN_MODE_SIGN_IN: 'pt-button-show-mode-sign-in',
+        DEPENDS_ON_FORM_VALIDITY: 'pt-depends-on-form-validity'
     }
 });

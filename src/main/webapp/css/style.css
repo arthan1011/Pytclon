@@ -106,9 +106,17 @@ h2 {
     visibility: visible;
 }
 
+.pt-form-invalid .pt-depends-on-form-validity {
+
+}
+
 .pt-form-mode-sign-in div.pt-input-show-mode-sign-up {
     display: none;
 }
 .pt-form-mode-sign-up div.pt-input-show-mode-sign-in {
+    display: none;
+}
+
+.pt-form-mode-sign-up .pt-button-show-mode-sign-in {
     display: none;
 }
