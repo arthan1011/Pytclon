@@ -67,7 +67,7 @@ public class UserResource implements Serializable {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addUser(User user) {
         if (!users.contains(user)) {
-//            userDao.save(user);
+            userDao.save(user);
             users.add(user);
             return Response.created(URI.create(user.getLogin())).build();
         } else {

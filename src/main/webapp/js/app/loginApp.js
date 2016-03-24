@@ -13,7 +13,7 @@ require([
     'dojo/request',
     'dojo/topic',
     'dojo/store/JsonRest',
-    'pytclon/util/deferred',
+    'pytclon/util/inputValidators',
     'pytclon/common/domClasses',
     'dojo/_base/declare',
     'dojo/promise/all',
@@ -29,102 +29,13 @@ require([
     request,
     topic,
     JsonRest,
-    utilDeferred,
+    validators,
     domClasses,
     declare,
     all
 ) {
     const MODE_SIGN_IN = 'sign-in';
     const MODE_SIGN_UP = 'sign-up';
-
-    // todo: extract validators to another module
-    var validators = {
-        shouldRepeat: function(otherInputGroup) {
-            return function() {
-                var self = this;
-                return utilDeferred.wrapFunc(function() {
-                    var fieldValue = domProp.get(self.field, 'value');
-                    var repeatFieldValue = domProp.get(otherInputGroup.field, 'value');
-                    if (fieldValue !== repeatFieldValue) {
-                        return {
-                            valid: false,
-                            msg: otherInputGroup.title + ' should be repeated'
-                        }
-                    } else {
-                        return { valid: true };
-                    }
-                });
-            }
-        },
-        maxLength: function(limit) {
-            return function() {
-                var self = this;
-                return utilDeferred.wrapFunc(function() {
-                    if (domProp.get(self.field, 'value').length > limit) {
-                        return {
-                            valid: false,
-                            msg: self.title + ' should be no more than ' + limit + ' symbols!'
-                        }
-                    } else {
-                        return { valid: true }
-                    }
-                });
-            }
-        },
-        required: function() {
-            var self = this;
-            return utilDeferred.wrapFunc(function() {
-                if (!domProp.get(self.field, 'value')) {
-                    return {
-                        valid: false,
-                        msg: self.title + ' should be specified!'
-                    }
-                } else {
-                    return { valid: true }
-                }
-            });
-        },
-        pattern: function(regex, message) {
-            return function() {
-                var self = this;
-                return utilDeferred.wrapFunc(function() {
-                    if (regex.test(domProp.get(self.field, 'value'))) {
-                        return { valid: true }
-                    } else {
-                        return {
-                            valid: false,
-                            msg: message
-                        }
-                    }
-                });
-            }
-        },
-        resourceExists: function(store) {
-            return function() {
-                var self = this;
-                var inputValue = domProp.get(self.field, 'value');
-                if (inputValue) {
-                    return store.get(inputValue)
-                        .then(function (data) {
-                            if (data) {
-                                return {
-                                    valid: false,
-                                    msg: self.title + ' with id "' + inputValue + '" already exists!'
-                                }
-                            } else {
-                                return {
-                                    valid: true
-                                };
-                            }
-                        }
-                    );
-                } else {
-                    return utilDeferred.wrapVal({valid: true});
-                }
-
-            }
-        }
-    };
 
     var userStore = new JsonRest({
         target: 'rest/users'
@@ -216,10 +127,6 @@ require([
                     constrainsArray.forEach(function(constraint) {
                         self._valid.constraints.push(constraint)
                     });
-                },
-
-                isDirty: function() {
-                    return this.field.value !== this.field.defaultValue;
                 },
 
                 showValidationMessage: function() {
@@ -432,7 +339,7 @@ require([
                 login: domProp.get(userGroup.field, 'value'),
                 password: domProp.get(passwordGroup.field, 'value'),
                 roles: ['client']
-            }).then(function(data) {
+            }).then(function() {
                 inputForm.setMode(MODE_SIGN_IN);
             }, function(error) {
                 alert(error.responseText);
