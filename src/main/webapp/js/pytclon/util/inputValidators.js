@@ -19,7 +19,7 @@ define([
                     if (fieldValue !== repeatFieldValue) {
                         return {
                             valid: false,
-                            msg: otherInputGroup.title + ' should be repeated'
+                            msg: otherInputGroup.title + ' should be repeated!'
                         }
                     } else {
                         return { valid: true };
@@ -80,7 +80,7 @@ define([
                             if (data) {
                                 return {
                                     valid: false,
-                                    msg: self.title + ' with id "' + inputValue + '" already exists!'
+                                    msg: self.title + ' with id "' + inputValue + '" already exists'
                                 }
                             } else {
                                 return {

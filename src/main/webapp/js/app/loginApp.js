@@ -1,6 +1,6 @@
 /**
- * Created by ashamsiev on 14.03.2016.
- */
+    * Created by ashamsiev on 14.03.2016.
+    */
 
 require([
     'dojo/dom-construct',
@@ -77,7 +77,8 @@ require([
     var userGroup = inputForm.createInputGroup({
         title: 'Username',
         name: 'j_username',
-        placeHolder: 'login'
+        placeHolder: 'login',
+        msgId: 'userMsg'
     });
     var passwordGroup = inputForm.createInputGroup({
         title: 'Password',
@@ -90,6 +91,7 @@ require([
         name: 'j_password_repeat',
         type: 'password',
         placeHolder: 'repeat password',
+        msgId: 'passRepMsg',
         showInMode: MODE_SIGN_UP
     });
     userGroup.setConstraints([

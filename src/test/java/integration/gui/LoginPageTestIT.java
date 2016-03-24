@@ -89,7 +89,7 @@ public class LoginPageTestIT {
     public void should_show_error_message_if_typed_login_is_already_taken_in_signup_mode(
             @InitialPage MainPage mainPage
     ) throws Exception {
-        final String LOGIN_ALREADY_TAKEN_MESSAGE = "User with login \"" + ALREADY_TAKEN_LOGIN + "\" already exists";
+        final String LOGIN_ALREADY_TAKEN_MESSAGE = "Username with id \"" + ALREADY_TAKEN_LOGIN + "\" already exists";
 
         loginPage.enterSignUpMode();
         Assert.assertFalse("Should not show error login message after entering sing-up mode", loginPage.isLoginErrorMessageVisible());

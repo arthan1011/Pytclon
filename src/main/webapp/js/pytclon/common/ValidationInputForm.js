@@ -55,6 +55,7 @@ define([
                 name: options.name || 'inputName'
             }, groupContainer);
             var inputMsg = domConstruct.create('div', {
+                id: options.msgId,
                 class: domClasses.INPUT_VALIDATION_MSG
             }, groupContainer);
 
