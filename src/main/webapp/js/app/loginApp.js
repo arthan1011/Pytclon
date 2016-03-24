@@ -55,7 +55,7 @@ require([
                     if (fieldValue !== repeatFieldValue) {
                         return {
                             valid: false,
-                            msg: otherInputGroup.title + ' value should be repeated'
+                            msg: otherInputGroup.title + ' should be repeated'
                         }
                     } else {
                         return {valid: true};
@@ -352,12 +352,10 @@ require([
 
     }
 
-    function addUserRequest() {
-        var login = domProp.get(query('input[name=j_username]')[0], 'value');
-        var pass = domProp.get(query('input[name=j_password]')[0], 'value');
+    function addUserRequest(options) {
         userStore.add({
-            login: login,
-            password: pass,
+            login: options.login,
+            password: options.pass,
             roles: ['client']
         }).then(function(data) {
             setMode(MODE_SIGN_IN);
@@ -608,7 +606,7 @@ require([
         }
     }
 
-    var InputForm = declare(null, {
+    var ValidationInputForm = declare(null, {
 
         inputGroups: [],
         validCallbacks: {},
@@ -678,6 +676,12 @@ require([
                     } else {
                         domClass.replace(this.node, domClasses.INPUT_VALID, domClasses.INPUT_INVALID);
                     }
+                },
+
+                clear: function() {
+                    this._valid.errors.length = 0;
+                    domClass.replace(this.node, domClasses.INPUT_VALID, domClasses.INPUT_INVALID);
+                    domProp.set(this.field, 'value', '');
                 }
             };
             this.inputGroups.push(inputGroupInstance);
@@ -708,7 +712,7 @@ require([
 
         clear: function() {
             this.inputGroups.forEach(function(group) {
-                domProp.set(group.field, 'value', '');
+                group.clear();
             })
         },
 
@@ -803,7 +807,7 @@ require([
     });
 
 
-    var inputForm = new InputForm('loginScreen');
+    var inputForm = new ValidationInputForm('loginScreen');
 
     var userGroup = inputForm.createInputGroup({
         title: 'Username',
@@ -873,7 +877,13 @@ require([
             inputForm.setMode(MODE_SIGN_UP);
             domProp.set(loginButtons.signUpBtn, 'disabled', true);
         } else {
-            inputForm.setMode(MODE_SIGN_IN);
+            userStore.add({
+                login: domProp.get(userGroup.field, 'value'),
+                password: domProp.get(passwordGroup.field, 'value'),
+                roles: ['client']
+            }).then(function(data) {
+                inputForm.setMode(MODE_SIGN_IN);
+            });
         }
     })
 
