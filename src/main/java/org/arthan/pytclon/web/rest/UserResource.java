@@ -65,7 +65,7 @@ public class UserResource implements Serializable {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUser(User user) {
-        userDao.save(user);
+//        userDao.save(user);
         users.add(user);
     }
 

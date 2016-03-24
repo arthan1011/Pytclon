@@ -105,3 +105,10 @@ h2 {
 .pt-form-invalid .pt-input-invalid .loginMsg {
     visibility: visible;
 }
+
+.pt-form-mode-sign-in div.pt-input-show-mode-sign-up {
+    display: none;
+}
+.pt-form-mode-sign-up div.pt-input-show-mode-sign-in {
+    display: none;
+}

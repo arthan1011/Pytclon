@@ -339,7 +339,14 @@ require([
             style: {width: '50%'}
         }, loginScreen));
 
-        on(signUpBtn, 'click', function() {
+
+        return {
+            setOnSignUp: function(callback) {
+                on(signUpBtn, 'click', callback);
+            }
+        };
+
+        /*on(signUpBtn, 'click', function() {
             if (isSignInMode()) {
                 domProp.set(signUpBtn, {
                     disabled: true
@@ -349,7 +356,7 @@ require([
                 addUserRequest();
                 console.log('new User created.');
             }
-        });
+        });*/
     }
 
     function createInputGroup(rootNode, options) {
@@ -568,8 +575,15 @@ require([
 
         createInputGroup: function(options) {
             var self = this;
+            var inputGroupClasses = [domClasses.INPUT_GROUP, domClasses.INPUT_VALID];
+            if (options.showInMode === MODE_SIGN_IN) {
+                inputGroupClasses.push(domClasses.INPUT_SHOW_IN_MODE_SIGN_IN);
+            } else if (options.showInMode === MODE_SIGN_UP) {
+                inputGroupClasses.push(domClasses.INPUT_SHOW_IN_MODE_SIGN_UP);
+            }
+
             var groupContainer = domConstruct.create('div', {
-                class: [domClasses.INPUT_GROUP, domClasses.INPUT_VALID].join(' ')
+                class: inputGroupClasses.join(' ')
             }, this.form);
             var inputField = domConstruct.create('input', {
                 type: options.type || 'text',
@@ -629,6 +643,12 @@ require([
 
         setMode: function(mode) {
             this.mode = mode;
+            if (mode === MODE_SIGN_UP) {
+                domClass.replace(this.form, domClasses.FORM_MODE_SIGN_UP, domClasses.FORM_MODE_SIGN_IN);
+            } else {
+                domClass.replace(this.form, domClasses.FORM_MODE_SIGN_IN, domClasses.FORM_MODE_SIGN_UP);
+            }
+            this.clear();
         },
 
         setOnValid: function(mode, callback) {
@@ -637,6 +657,12 @@ require([
 
         setOnInvalid: function(mode, callback) {
             this.invalidCallbacks[mode] = callback;
+        },
+
+        clear: function() {
+            this.inputGroups.forEach(function(group) {
+                domProp.set(group.field, 'value', '');
+            })
         },
 
         _setFormValidity: function (valid) {
@@ -719,7 +745,7 @@ require([
                 name: 'loginForm',
                 method: 'POST',
                 action: 'j_security_check',
-                class: ['login-form', domClasses.FORM_VALID].join(' '),
+                class: ['login-form', domClasses.FORM_VALID, domClasses.FORM_MODE_SIGN_IN].join(' '),
                 'accept-charset': 'utf-8'
             });
         }
@@ -733,16 +759,22 @@ require([
         name: 'j_username',
         placeHolder: 'login'
     });
-    userGroup.setConstraints([
-        {
-            validator: validators.required
-        }
-    ]);
     var passwordGroup = inputForm.createInputGroup({
         title: 'Password',
         name: 'j_password',
         placeHolder: 'password'
     });
+    var passwordRepeatGroup = inputForm.createInputGroup({
+        title: 'Repeat password',
+        name: 'j_password_repeat',
+        placeHolder: 'repeat password',
+        showInMode: MODE_SIGN_UP
+    });
+    userGroup.setConstraints([
+        {
+            validator: validators.required
+        }
+    ]);
     passwordGroup.setConstraints([
         {
             validator: validators.required
@@ -755,6 +787,16 @@ require([
     });
     inputForm.setOnInvalid(MODE_SIGN_IN, function() {
         console.log('form is still invalid');
+    });
+
+    var loginButtons = crateSignButtons('loginScreen');
+    loginButtons.setOnSignUp(function() {
+
+        if (inputForm.mode === MODE_SIGN_IN) {
+            inputForm.setMode(MODE_SIGN_UP);
+        } else {
+            inputForm.setMode(MODE_SIGN_IN);
+        }
     })
 
 });

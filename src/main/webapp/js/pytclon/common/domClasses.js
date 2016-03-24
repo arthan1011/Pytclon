@@ -10,6 +10,10 @@ define(function() {
         INPUT_VALID: 'pt-input-valid',
         INPUT_INVALID: 'pt-input-invalid',
         FORM_VALID: 'pt-form-valid',
-        FORM_INVALID: 'pt-form-invalid'
+        FORM_INVALID: 'pt-form-invalid',
+        FORM_MODE_SIGN_IN: 'pt-form-mode-sign-in',
+        FORM_MODE_SIGN_UP: 'pt-form-mode-sign-up',
+        INPUT_SHOW_IN_MODE_SIGN_IN: 'pt-input-show-mode-sign-in',
+        INPUT_SHOW_IN_MODE_SIGN_UP: 'pt-input-show-mode-sign-up'
     }
 });
