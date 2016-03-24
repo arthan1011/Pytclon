@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -64,9 +65,14 @@ public class UserResource implements Serializable {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addUser(User user) {
-//        userDao.save(user);
-        users.add(user);
+    public Response addUser(User user) {
+        if (users.contains(user)) {
+//            userDao.save(user);
+            users.add(user);
+            return Response.created(URI.create(user.getLogin())).build();
+        } else {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
     }
 
     @GET

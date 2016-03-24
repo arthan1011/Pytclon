@@ -46,20 +46,22 @@ require([
     };
 
     var validators = {
-        max20Symbols: function(targetInputGroup) {
-            return utilDeferred.wrapFunc(function() {
+        shouldRepeat: function(otherInputGroup) {
+            return function() {
                 var self = this;
-                if (domProp.get(targetInputGroup.field, 'value').length > 20) {
-                    return {
-                        valid: false,
-                        msg: targetInputGroup.title + ' should be no more than 20 symbols!'
+                return utilDeferred.wrapFunc(function() {
+                    var fieldValue = domProp.get(self.field, 'value');
+                    var repeatFieldValue = domProp.get(otherInputGroup.field, 'value');
+                    if (fieldValue !== repeatFieldValue) {
+                        return {
+                            valid: false,
+                            msg: otherInputGroup.title + ' value should be repeated'
+                        }
+                    } else {
+                        return {valid: true};
                     }
-                } else {
-                    return {
-                        valid: true
-                    }
-                }
-            });
+                });
+            }
         },
         maxLength: function(limit) {
             return function() {
@@ -112,6 +114,31 @@ require([
                 );
             } else {
                 return utilDeferred.wrapVal({valid: true});
+            }
+        },
+        resourceExists: function(store) {
+            return function() {
+                var self = this;
+                var inputValue = domProp.get(self.field, 'value');
+                if (inputValue) {
+                    return store.get(inputValue)
+                        .then(function (data) {
+                            if (data) {
+                                return {
+                                    valid: false,
+                                    msg: self.title + ' with id "' + inputValue + '" already exists!'
+                                }
+                            } else {
+                                return {
+                                    valid: true
+                                };
+                            }
+                        }
+                    );
+                } else {
+                    return utilDeferred.wrapVal({valid: true});
+                }
+
             }
         }
     };
@@ -360,6 +387,7 @@ require([
 
         return {
             signInBtn: signInBtn,
+            signUpBtn: signUpBtn,
             setOnSignUp: function(callback) {
                 on(signUpBtn, 'click', callback);
             }
@@ -708,6 +736,10 @@ require([
             }
 
             return function() {
+                // form should be in invalid state immediately after user input and stay in that state before all
+                // delayed validations are checked.
+                form._setFormValidity(false);
+
                 all(form._checkGroupsConstraints()).then(function(reports) {
                     if (allReportsValid(reports)) {
                         form._setFormValidity(true)
@@ -798,11 +830,21 @@ require([
         {
             validator: validators.maxLength(15),
             mode: MODE_SIGN_UP
+        },
+        {
+            validator: validators.resourceExists(userStore),
+            mode: MODE_SIGN_UP
         }
     ]);
     passwordGroup.setConstraints([
         {
             validator: validators.required
+        }
+    ]);
+    passwordRepeatGroup.setConstraints([
+        {
+            validator: validators.shouldRepeat(passwordGroup),
+            mode: MODE_SIGN_UP
         }
     ]);
 
@@ -817,9 +859,11 @@ require([
     });
     inputForm.setOnValid(MODE_SIGN_UP, function() {
         console.log('New user is ready for registration');
+        domProp.set(loginButtons.signUpBtn, 'disabled', false);
     });
     inputForm.setOnInvalid(MODE_SIGN_UP, function() {
         console.log('User credentials for registration are not specified');
+        domProp.set(loginButtons.signUpBtn, 'disabled', true);
     });
 
     var loginButtons = crateSignButtons(inputForm.form);
@@ -827,6 +871,7 @@ require([
 
         if (inputForm.mode === MODE_SIGN_IN) {
             inputForm.setMode(MODE_SIGN_UP);
+            domProp.set(loginButtons.signUpBtn, 'disabled', true);
         } else {
             inputForm.setMode(MODE_SIGN_IN);
         }

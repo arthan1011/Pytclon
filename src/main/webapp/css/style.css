@@ -5,6 +5,8 @@
 *:focus {
     outline: none;
 }
+
+
 body {
     font-family: Arial;
     background-color: #3498DB;
@@ -82,6 +84,12 @@ input:focus {
 .btn:disabled {
     background-color: #3cc0e0;
     cursor: not-allowed;
+}
+.btn:focus {
+    color: #343434;
+}
+.btn::-moz-focus-inner {
+    border: 0;
 }
 
 h2 {
