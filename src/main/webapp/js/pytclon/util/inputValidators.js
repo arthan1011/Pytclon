@@ -10,7 +10,7 @@ define([
     utilDeferred
 ) {
     return {
-        shouldRepeat: function(otherInputGroup) {
+        shouldBeEqual: function(otherInputGroup) {
             return function() {
                 var self = this;
                 return utilDeferred.wrapFunc(function() {
@@ -20,6 +20,23 @@ define([
                         return {
                             valid: false,
                             msg: otherInputGroup.title + ' should be repeated!'
+                        }
+                    } else {
+                        return { valid: true };
+                    }
+                });
+            }
+        },
+        shouldNotBeEqual: function(otherInputGroup) {
+            return function() {
+                var self = this;
+                return utilDeferred.wrapFunc(function() {
+                    var fieldValue = domProp.get(self.field, 'value');
+                    var notRepeatFieldValue = domProp.get(otherInputGroup.field, 'value');
+                    if (fieldValue === notRepeatFieldValue) {
+                        return {
+                            valid: false,
+                            msg: otherInputGroup.title + ' and ' + self.title + ' should not be equal!'
                         }
                     } else {
                         return { valid: true };

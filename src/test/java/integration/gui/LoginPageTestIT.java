@@ -110,13 +110,68 @@ public class LoginPageTestIT {
 
         loginPage.enterSignUpMode();
 
-        loginPage.setPassword("test_pass");
-        loginPage.setRepeatPassword("test_pass_typo");
+        loginPage.setPassword("test_passddddddddddddddddddddddddddddddddddddddd");
+        loginPage.setRepeatPassword("test_pass_typoddddddddddddddddddddddddddddddddddddddd");
 
         Assert.assertEquals(
                 "Should show password must be repeated message",
                 PASSWORD_IS_NOT_REPEATED_MESSAGE,
                 loginPage.getRepeatPasswordMessage()
+        );
+    }
+
+    @Test
+    public void should_show_error_message_and_disable_signup_button_if_password_equals_login_in_signup_mode(
+            @InitialPage MainPage mainPage
+    ) throws Exception {
+        loginPage.enterSignUpMode();
+
+        final String SOME_LOGIN = "some_login";
+        final String PASSWORD_AS_LOGIN = SOME_LOGIN;
+        final String LOGIN_EQUALS_PASSWORD_MESSAGE = "Username and Password should not be equal!";
+
+        loginPage.setLogin(SOME_LOGIN);
+        loginPage.setPassword(PASSWORD_AS_LOGIN);
+
+        String passwordMessage = loginPage.getPasswordMessage();
+        Assert.assertEquals(
+                "Should show login and password can not be equal message",
+                LOGIN_EQUALS_PASSWORD_MESSAGE,
+                passwordMessage
+        );
+    }
+
+    @Test
+    public void should_show_username_do_not_matches_pattern_in_signup_mode(
+            @InitialPage MainPage mainPage
+    ) throws Exception {
+        loginPage.enterSignUpMode();
+
+        final String LOGIN_STARTS_WITH_DIGITS = "23fffffk";
+        loginPage.setLogin(LOGIN_STARTS_WITH_DIGITS);
+
+        final String PATTERN_MATCH_ERROR_MESSAGE = "Username should not start with a digit";
+        Assert.assertEquals(
+                "Should show login does not match pattern message",
+                PATTERN_MATCH_ERROR_MESSAGE,
+                loginPage.getLoginErrorMessage()
+        );
+    }
+
+    @Test
+    public void should_show_username_is_too_long(
+            @InitialPage MainPage mainPage
+    ) throws Exception {
+
+        loginPage.enterSignUpMode();
+
+        final String TOO_LONG_USERNAME = "kkkkkkkkkkkkkkffffffffffffffffffddddddddddddddddddd";
+        loginPage.setLogin(TOO_LONG_USERNAME);
+
+        Assert.assertEquals(
+                "Should show username is too long message",
+                "Username should be no more than 15 symbols!",
+                loginPage.getLoginErrorMessage()
         );
     }
 }

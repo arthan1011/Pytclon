@@ -5,6 +5,8 @@ import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Arthur Shamsiev on 23.02.16.
  * Using IntelliJ IDEA
@@ -32,6 +34,8 @@ public class LoginPage {
     private WebElement loginErrorMessage;
     @FindBy(id = "passRepMsg")
     private WebElement passwordRepeatErrorMessage;
+    @FindBy(id = "passMsg")
+    private WebElement passwordErrorMessage;
 
     public void login(String username, String password) {
         loginInput.sendKeys(username);
@@ -45,11 +49,15 @@ public class LoginPage {
     }
 
     public void setLogin(String username) {
-        loginInput.sendKeys(username);
+        typeTo(loginInput, username);
     }
 
     public void setPassword(String password) {
-        passwordInput.sendKeys(password);
+        typeTo(passwordInput, password);
+    }
+
+    public void setRepeatPassword(String repeatedPassword) {
+        typeTo(passwordRepeatInput, repeatedPassword);
     }
 
     public boolean isRepeatPasswordFieldVisible() {
@@ -69,10 +77,6 @@ public class LoginPage {
         return loginErrorMessage.getText();
     }
 
-    public void setRepeatPassword(String repeatedPassword) {
-        passwordRepeatInput.sendKeys(repeatedPassword);
-    }
-
     public void signUp() {
         Graphene.waitAjax().until().element(signUpButton).is().enabled();
         signUpButton.click();
@@ -82,5 +86,21 @@ public class LoginPage {
     public String getRepeatPasswordMessage() {
         Graphene.waitAjax().until().element(passwordRepeatErrorMessage).is().visible();
         return passwordRepeatErrorMessage.getText();
+    }
+
+    public String getPasswordMessage() {
+        Graphene.waitAjax().until().element(passwordErrorMessage).is().visible();
+        return passwordErrorMessage.getText();
+    }
+
+    /**
+     * Delay typing of last symbol of input
+     * @param inputField
+     * @param inputValue
+     */
+    private void typeTo(WebElement inputField, String inputValue) {
+        inputField.sendKeys(inputValue.substring(0, inputValue.length() - 1));
+        Graphene.waitGui().withTimeout(800, TimeUnit.MILLISECONDS);
+        inputField.sendKeys(inputValue.substring(inputValue.length() - 1));
     }
 }

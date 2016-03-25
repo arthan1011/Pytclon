@@ -84,7 +84,8 @@ require([
         title: 'Password',
         name: 'j_password',
         type: 'password',
-        placeHolder: 'password'
+        placeHolder: 'password',
+        msgId: 'passMsg'
     });
     var passwordRepeatGroup = inputForm.createInputGroup({
         title: 'Repeat password',
@@ -113,11 +114,15 @@ require([
     passwordGroup.setConstraints([
         {
             validator: validators.required
+        },
+        {
+            validator: validators.shouldNotBeEqual(userGroup),
+            mode: MODE_SIGN_UP
         }
     ]);
     passwordRepeatGroup.setConstraints([
         {
-            validator: validators.shouldRepeat(passwordGroup),
+            validator: validators.shouldBeEqual(passwordGroup),
             mode: MODE_SIGN_UP
         }
     ]);
