@@ -10,14 +10,14 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -30,7 +30,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: user_roles; Type: TABLE; Schema: public; Owner: jboss; Tablespace:
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: jboss; Tablespace: 
 --
 
 CREATE TABLE user_roles (
@@ -42,47 +42,48 @@ CREATE TABLE user_roles (
 ALTER TABLE user_roles OWNER TO jboss;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: jboss; Tablespace:
+-- Name: users; Type: TABLE; Schema: public; Owner: jboss; Tablespace: 
 --
 
 CREATE TABLE users (
     passwd character varying(256) NOT NULL,
-    login character varying(64) NOT NULL
+    login character varying(64) NOT NULL,
+    id integer NOT NULL
 );
 
 
 ALTER TABLE users OWNER TO jboss;
 
 --
--- Data for Name: user_roles; Type: TABLE DATA; Schema: public; Owner: jboss
+-- Name: users_i_seq; Type: SEQUENCE; Schema: public; Owner: jboss
 --
 
-COPY user_roles (login, role) FROM stdin;
-arthan	admin
-python	client
-\.
+CREATE SEQUENCE users_i_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
---
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: jboss
---
-
-COPY users (passwd, login) FROM stdin;
-Ecj3XMA1pbPDqE7GgS6DLWa3h2oO55jns5YgJEtVerY=	arthan
-HIv+j4AdeXRcRjHQn/82yCqjf8TM5PyUZoPXsza2MDI=	python
-\.
-
+ALTER TABLE users_i_seq OWNER TO jboss;
 
 --
--- Name: USERS_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace:
+-- Name: users_i_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jboss
 --
 
-ALTER TABLE ONLY users
-    ADD CONSTRAINT "USERS_pkey" PRIMARY KEY (login);
+ALTER SEQUENCE users_i_seq OWNED BY users.id;
 
 
 --
--- Name: USER_ROLES_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace:
+-- Name: id; Type: DEFAULT; Schema: public; Owner: jboss
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_i_seq'::regclass);
+
+
+--
+-- Name: USER_ROLES_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
 --
 
 ALTER TABLE ONLY user_roles
@@ -90,11 +91,27 @@ ALTER TABLE ONLY user_roles
 
 
 --
--- Name: USER_ROLES_login_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: jboss
+-- Name: login_unique; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT login_unique UNIQUE (login);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: USER_ROLES_login_fkey; Type: FK CONSTRAINT; Schema: public; Owner: jboss
 --
 
 ALTER TABLE ONLY user_roles
-    ADD CONSTRAINT "USER_ROLES_login_fkey1" FOREIGN KEY (login) REFERENCES users(login) ON DELETE CASCADE;
+    ADD CONSTRAINT "USER_ROLES_login_fkey" FOREIGN KEY (login) REFERENCES users(login) ON DELETE CASCADE;
 
 
 --
