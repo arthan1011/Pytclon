@@ -1,0 +1,142 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: jboss; Tablespace: 
+--
+
+CREATE TABLE user_roles (
+    id integer NOT NULL,
+    role character varying(64) NOT NULL
+);
+
+
+ALTER TABLE user_roles OWNER TO jboss;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: jboss
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 9
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO jboss;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: jboss; Tablespace: 
+--
+
+CREATE TABLE users (
+    passwd character varying(256) NOT NULL,
+    login character varying(64) NOT NULL,
+    id integer DEFAULT nextval('users_id_seq'::regclass) NOT NULL
+);
+
+
+ALTER TABLE users OWNER TO jboss;
+
+--
+-- Data for Name: user_roles; Type: TABLE DATA; Schema: public; Owner: jboss
+--
+
+COPY user_roles (id, role) FROM stdin;
+9	admin
+10	client
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: jboss
+--
+
+COPY users (passwd, login, id) FROM stdin;
+Ecj3XMA1pbPDqE7GgS6DLWa3h2oO55jns5YgJEtVerY=	arthan	9
+HIv+j4AdeXRcRjHQn/82yCqjf8TM5PyUZoPXsza2MDI=	python	10
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jboss
+--
+
+SELECT pg_catalog.setval('users_id_seq', 10, true);
+
+
+--
+-- Name: USER_ROLES_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY user_roles
+    ADD CONSTRAINT "USER_ROLES_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: login_unique; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT login_unique UNIQUE (login);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: jboss; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: USER_ROLES_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: jboss
+--
+
+ALTER TABLE ONLY user_roles
+    ADD CONSTRAINT "USER_ROLES_id_fkey" FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--

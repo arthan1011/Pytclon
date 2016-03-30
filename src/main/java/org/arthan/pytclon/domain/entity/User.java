@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@SecondaryTable(name = "user_roles", pkJoinColumns = {@PrimaryKeyJoinColumn(name = "login") })
+@SecondaryTable(name = "user_roles", pkJoinColumns = {@PrimaryKeyJoinColumn(name = "id") })
 public class User implements Serializable {
 
     public User() {
@@ -30,8 +30,8 @@ public class User implements Serializable {
             sequenceName = "users_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
-    @Column(name = "id", updatable = false)
-    private String id;
+    @Column(name = "id", updatable = false, columnDefinition = "serial")
+    private Integer id;
 
     @Column(name = "login")
     private String login;
