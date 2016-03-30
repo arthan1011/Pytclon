@@ -9,10 +9,14 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.io.Serializable;
 import java.net.URI;
+import java.nio.file.attribute.UserPrincipal;
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -97,6 +101,14 @@ public class UserResource implements Serializable {
         }
         return response;
 
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/get/current")
+    public Response getCurrentUser(@Context SecurityContext context) {
+        String name = context.getUserPrincipal().getName();
+        return Response.ok().entity(name).build();
     }
 
     @VisibleForTesting

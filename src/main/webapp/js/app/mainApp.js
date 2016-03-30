@@ -11,6 +11,7 @@ require([
     'dojo/dom',
     'dojo/dom-construct',
     'dojo/on',
+    'dojo/request',
     'pytclon/util/overlay',
     'dojo/domReady!'
 ], function(
@@ -22,6 +23,7 @@ require([
     dom,
     domConstruct,
     on,
+    request,
     Overlay)
 {
     (new Overlay()).init();
@@ -34,6 +36,13 @@ require([
         leftContent.add(newContent);
     });
 
-    var welcomeNode = dom.byId('welcome');
-    domConstruct.place('<em>Welcome to Game</em>', welcomeNode);
+    request("/pytclon/rest/users/get/current")
+        .then(function(data) {
+            showWelcomeMsg(data);
+        });
+
+    function showWelcomeMsg(name) {
+        var welcomeNode = dom.byId('welcome');
+        domConstruct.place('<em>Welcome to Game,' + ' ' + name + '</em>', welcomeNode);
+    }
 });
