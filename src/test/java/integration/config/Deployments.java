@@ -34,7 +34,7 @@ public class Deployments {
                 .importFrom(new File("target/pytclon.war"))
                 .as(WebArchive.class);
         archive.addAsResource("test-persistence.xml", "/META-INF/persistence.xml");
-        archive.addAsResource("test-schema.sql", "/META-INF/create_schema.xml");
+        archive.addAsResource("test-schema.sql", "/META-INF/create_schema.xml"); // TODO: Почему .xml, а не .sql ?
         archive.addAsWebInfResource("test-jboss-web.xml", "jboss-web.xml");
         archive.addAsWebInfResource("test-web-security.xml", "web.xml");
         archive.addPackage(LoginPage.class.getPackage());
