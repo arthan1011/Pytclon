@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "login": "test_user_with_player"
+    }
+  ],
+  "players": [
+    {
+      "name": "default"
+    }
+  ]
+}
