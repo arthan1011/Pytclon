@@ -1,6 +1,8 @@
 package org.arthan.pytclon.service;
 
+import org.arthan.pytclon.domain.control.PlayerDao;
 import org.arthan.pytclon.domain.control.UserDao;
+import org.arthan.pytclon.domain.entity.Player;
 import org.arthan.pytclon.domain.entity.User;
 
 import javax.ejb.Stateless;
@@ -15,17 +17,24 @@ import javax.inject.Inject;
 @Stateless
 public class UserService {
 
-    @Inject
     private UserDao userDao;
-    @Inject
     private PlayerDao playerDao;
 
+    @Inject
+    public UserService(
+            UserDao userDao,
+            PlayerDao playerDao) {
+        this.userDao = userDao;
+        this.playerDao = playerDao;
+    }
 
     public void create(User user) {
         userDao.save(user);
+        Integer newUserId = user.getId();
 
         Player defaultPlayer = new Player();
         defaultPlayer.setName("default");
+        defaultPlayer.setUserId(newUserId);
         playerDao.save(defaultPlayer);
     }
 }

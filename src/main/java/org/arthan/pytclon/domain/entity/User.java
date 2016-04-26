@@ -58,6 +58,10 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public List<String> getRoles() {
         String[] roles = this.roles.split(",\\s*");
         return Lists.newArrayList(roles);

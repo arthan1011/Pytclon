@@ -25,11 +25,22 @@ public class Player implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "user_id")
+    private Integer userId;
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

@@ -1,5 +1,14 @@
 package org.arthan.pytclon.service;
 
+import mockit.Expectations;
+import mockit.Injectable;
+import mockit.Mocked;
+import org.arthan.pytclon.domain.control.PlayerDao;
+import org.arthan.pytclon.domain.control.UserDao;
+import org.arthan.pytclon.domain.entity.Player;
+import org.arthan.pytclon.domain.entity.User;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -9,6 +18,22 @@ import static org.junit.Assert.*;
  */
 public class UserServiceTest {
 
-    // TODO we should test that when new user is created his id is retrieved and used as user_id for a new default player
-    // that should be created right after new user creation
+    @Test
+    public void shouldCreateDefaultPlayerForNewUser(
+            @Mocked final UserDao userDao,
+            @Mocked final PlayerDao playerDao,
+            @Injectable final User user,
+            @Mocked final Player player) throws Exception {
+
+        Integer TEST_USER_ID = 101;
+
+        new Expectations() {{
+            user.getId(); result = TEST_USER_ID;
+            player.setName("default");
+            player.setUserId(TEST_USER_ID);
+        }};
+
+        UserService userService = new UserService(userDao, playerDao);
+        userService.create(user);
+    }
 }
