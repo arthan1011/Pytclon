@@ -37,6 +37,9 @@ public class LoginPage {
     @FindBy(id = "passMsg")
     private WebElement passwordErrorMessage;
 
+    @FindBy(id = "logoutBtn")
+    private WebElement logoutButton;
+
     public void login(String username, String password) {
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password);
@@ -102,5 +105,10 @@ public class LoginPage {
         inputField.sendKeys(inputValue.substring(0, inputValue.length() - 1));
         Graphene.waitGui().withTimeout(800, TimeUnit.MILLISECONDS);
         inputField.sendKeys(inputValue.substring(inputValue.length() - 1));
+    }
+
+    public void logout() {
+        logoutButton.click();
+        Graphene.waitModel().withTimeout(5, TimeUnit.SECONDS);
     }
 }

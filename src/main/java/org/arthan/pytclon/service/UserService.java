@@ -7,6 +7,8 @@ import org.arthan.pytclon.domain.entity.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Arthur Shamsiev on 12.04.16.
@@ -15,7 +17,7 @@ import javax.inject.Inject;
  */
 
 @Stateless
-public class UserService {
+public class UserService implements Serializable {
 
     private UserDao userDao;
     private PlayerDao playerDao;
@@ -40,4 +42,9 @@ public class UserService {
         defaultPlayer.setUserId(newUserId);
         playerDao.save(defaultPlayer);
     }
+
+    public List<User> findAll() {
+        return userDao.findAll();
+    }
+
 }

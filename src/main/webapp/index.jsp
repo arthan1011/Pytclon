@@ -12,7 +12,7 @@
     <script data-dojo-config="async: true, parseOnLoad: true" src="webjars/dojo/1.10.4/dojo/dojo.js.uncompressed.js"></script>
     <script type="text/javascript" src="js/app/mainApp.js"></script>
     <div class="loadingOverlay"><h1>Loading...</h1></div>
-    <a href="logout">Log Out</a>
+    <a id="logoutBtn" href="logout">Log Out</a>
     <div
             id="appLayout" class="demoLayout"
             data-dojo-type="dijit/layout/BorderContainer"

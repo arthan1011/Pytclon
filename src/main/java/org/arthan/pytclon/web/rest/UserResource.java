@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import org.arthan.pytclon.domain.control.UserDao;
 import org.arthan.pytclon.domain.entity.User;
+import org.arthan.pytclon.service.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -33,23 +34,23 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class UserResource implements Serializable {
 
-    private UserDao userDao;
+    private UserService userService;
 
     private List<User> users;
 
     @Inject
     @PostConstruct
     public void init(
-           UserDao userDao
+           UserService userService
     ) {
-        this.userDao = userDao;
+        this.userService = userService;
         loadUsers();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
-        List<User> allUsers = userDao.findAll();
+        List<User> allUsers = userService.findAll();
 
         AtomicInteger count = new AtomicInteger(1);
         List<Map<String, Object>> resultList = allUsers.stream()
@@ -71,7 +72,7 @@ public class UserResource implements Serializable {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addUser(User user) {
         if (!users.contains(user)) {
-            userDao.save(user);
+            userService.create(user);
             users.add(user);
             return Response.created(URI.create(user.getLogin())).build();
         } else {
@@ -120,7 +121,7 @@ public class UserResource implements Serializable {
     }
 
     private void loadUsers() {
-        users = userDao.findAll();
+        users = userService.findAll();
     }
 
     @VisibleForTesting
