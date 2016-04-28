@@ -20,6 +20,9 @@ public class UserService {
     private UserDao userDao;
     private PlayerDao playerDao;
 
+    public UserService() {
+    }
+
     @Inject
     public UserService(
             UserDao userDao,
@@ -29,8 +32,8 @@ public class UserService {
     }
 
     public void create(User user) {
-        userDao.save(user);
-        Integer newUserId = user.getId();
+        User createdUser = userDao.save(user);
+        Integer newUserId = createdUser.getId();
 
         Player defaultPlayer = new Player();
         defaultPlayer.setName("default");

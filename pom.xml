@@ -66,16 +66,16 @@
         </dependency>
 
         <dependency>
-          <groupId>org.jmockit</groupId>
-          <artifactId>jmockit</artifactId>
-          <version>1.19</version>
-          <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>1.19</version>
             <scope>test</scope>
         </dependency>
 
@@ -202,7 +202,7 @@
                 </os>-->
             </activation>
             <properties>
-                <chrome.driver>C:\Users\ASHamsiev\Programms\chromedriver.exe</chrome.driver>
+                <chrome.driver>C:\Users\arthan\Arthan\Programs\chromedriver.exe</chrome.driver>
                 <chrome.binary>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</chrome.binary>
                 <pytclon.context.root>pytclon</pytclon.context.root>
             </properties>

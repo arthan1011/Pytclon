@@ -3,11 +3,13 @@ package org.arthan.pytclon.service;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Mocked;
+import mockit.integration.junit4.JMockit;
 import org.arthan.pytclon.domain.control.PlayerDao;
 import org.arthan.pytclon.domain.control.UserDao;
 import org.arthan.pytclon.domain.entity.Player;
 import org.arthan.pytclon.domain.entity.User;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +18,8 @@ import static org.junit.Assert.*;
  * Using IntelliJ IDEA
  * Project - Pytclon
  */
+
+@RunWith(JMockit.class)
 public class UserServiceTest {
 
     @Test

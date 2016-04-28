@@ -19,11 +19,11 @@ public class UserDao extends AbstractDao<User> {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
 
         user.setPassword(cypherPassword(user.getPassword()));
 
-        super.save(user);
+        return super.save(user);
     }
 
     private String cypherPassword(String password) {

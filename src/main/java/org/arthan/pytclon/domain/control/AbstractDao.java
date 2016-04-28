@@ -33,8 +33,8 @@ public abstract class AbstractDao<T extends Serializable> implements Serializabl
         return em.createQuery(cQuery).getResultList();
     }
 
-    public void save(T entity) {
-        em.merge(entity);
+    public T save(T entity) {
+        return em.merge(entity);
     }
 
 }
