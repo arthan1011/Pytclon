@@ -95,6 +95,6 @@ public class UserTestIT {
     @ShouldMatchDataSet(value = "datasets/user_with_default_player_1.json")
     @CleanupUsingScript("scripts/delete_all_users.sql")
     public void check_new_user_with_default_player_created() throws Exception {
-        // Empty on purpose
+        // Empty on purpose.
     }
 }
