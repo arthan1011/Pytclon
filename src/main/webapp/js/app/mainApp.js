@@ -1,10 +1,11 @@
 /**
- * Created by ashamsiev on 18.03.2016.
- */
+    * Created by ashamsiev on 18.03.2016. Project pytclon
+    */
 
 require([
     'dojo/parser',
     'pytclon/common/ContentHolder',
+    'dijit/form/Button',
     'dijit/layout/ContentPane',
     'dijit/layout/BorderContainer',
     'dijit/registry',
@@ -17,6 +18,7 @@ require([
 ], function(
     parser,
     ContentHolder,
+    Button,
     ContentPane,
     BorderContainer,
     registry,
@@ -38,11 +40,29 @@ require([
 
     request("/pytclon/rest/users/get/current")
         .then(function(data) {
-            showWelcomeMsg(data);
+            var welcomeNode = dom.byId('welcome');
+            domConstruct.empty(welcomeNode);
+            domConstruct.place('<em>Welcome to Game,' + ' ' + data + '</em>', welcomeNode);
         });
 
-    function showWelcomeMsg(name) {
-        var welcomeNode = dom.byId('welcome');
-        domConstruct.place('<em>Welcome to Game,' + ' ' + name + '</em>', welcomeNode);
-    }
+    var userSettingsButtonNode = domConstruct.create(
+        'button', {
+            style: 'float: right'
+        },
+        dom.byId('pageHeader')
+    );
+    new Button({
+        label: 'UserSettings',
+        style: 'float: right',
+        onClick: function () {
+            alert('TODO: show user settings dialog');
+        }
+    }, userSettingsButtonNode).startup();
+
+    /*
+    var logoutButton = new Button({
+        label: 'Log out',
+        style: 'float: right'
+    }, 'logoutBtn').startup();
+    */
 });
