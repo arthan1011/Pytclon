@@ -39,7 +39,9 @@
              data-dojo-props="region: 'top'">
             <span id="welcome">stub</span>
             <a id="logoutBtn"
+               style="display: none"
                href="logout">Log Out</a>
+            <button id="logoutButton"></button>
         </div>
         <div id="leftCol"
              class="edgePanel"

@@ -37,7 +37,7 @@ public class LoginPage {
     @FindBy(id = "passMsg")
     private WebElement passwordErrorMessage;
 
-    @FindBy(id = "logoutBtn")
+    @FindBy(id = "logoutButton")
     private WebElement logoutButton;
 
     public void login(String username, String password) {

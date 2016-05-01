@@ -59,10 +59,11 @@ require([
         }
     }, userSettingsButtonNode).startup();
 
-    /*
-    var logoutButton = new Button({
+    new Button({
         label: 'Log out',
-        style: 'float: right'
-    }, 'logoutBtn').startup();
-    */
+        style: 'float: right',
+        onClick: function () {
+            dom.byId('logoutBtn').click();
+        }
+    }, 'logoutButton').startup();
 });
