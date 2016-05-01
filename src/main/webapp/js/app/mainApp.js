@@ -14,6 +14,7 @@ require([
     'dojo/on',
     'dojo/request',
     'pytclon/util/overlay',
+    'pytclon/dialog/userSettingsDialog',
     'dojo/domReady!'
 ], function(
     parser,
@@ -26,7 +27,8 @@ require([
     domConstruct,
     on,
     request,
-    Overlay)
+    Overlay,
+    userSettingsDialog)
 {
     (new Overlay()).init();
 
@@ -55,7 +57,7 @@ require([
         label: 'UserSettings',
         style: 'float: right',
         onClick: function () {
-            alert('TODO: show user settings dialog');
+            userSettingsDialog.show();
         }
     }, userSettingsButtonNode).startup();
 
