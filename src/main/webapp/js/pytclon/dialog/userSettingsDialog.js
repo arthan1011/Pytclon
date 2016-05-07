@@ -5,40 +5,53 @@
 define([
     'dijit/Dialog',
     'dijit/form/Button',
+    'dijit/layout/BorderContainer',
+    'dijit/layout/ContentPane',
     'dojo/dom-construct'
 ], function (
     Dialog,
     Button,
+    BorderContainer,
+    ContentPane,
     domConstruct
 ) {
     var dialogContent = domConstruct.create('div');
 
-    var mainDialogRegion = domConstruct.create('div', {
-        style: 'height: 500px; width: 600px; background-color: gray',
-        "class": "dijitDialogPaneContentArea"
-    }, dialogContent) ;
+    var bc = new BorderContainer({
+        gutters: false,
+        style: "width: 600px; height: 500px;"
+    });
+    var leftPane = new ContentPane({
+        region: "left",
+        style: "width: 150px; border-right: solid grey 1px",
+        content: 'Tabs'
+    });
+    var mainPane = new ContentPane({
+        region: "center",
+        content: 'Main'
+    });
+    var bottomPanel = new ContentPane({
+        region: "bottom",
+        style: "border-top: solid grey 1px"
+    });
+    bc.addChild(leftPane);
+    bc.addChild(mainPane);
+    bc.addChild(bottomPanel);
 
-    var footerActionBar = domConstruct.create('div', {
-        style: 'background-color: lightgrey; padding: 3px',
-        "class": "dijitDialogPaneActionBar"
-    }, dialogContent);
-
-    var cancelButtonNode = domConstruct.create('button', {
-        innerHTML: 'Cancel',
-        type: 'button'
-    }, footerActionBar);
+    bc.startup();
 
     var dialog = new Dialog({
         title: "User settings",
-        content: dialogContent,
+        content: bc,
         closable: false
     });
     new Button({
         label: 'Cancel',
+        style: 'float: right',
         onClick: function () {
             dialog.hide();
         }
-    }, cancelButtonNode);
+    }).placeAt(bottomPanel);
 
     return dialog
 });
