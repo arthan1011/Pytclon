@@ -21,6 +21,10 @@ html, body {
     height: 550px;
 }
 
+.noPad {
+    padding: 0 !important;
+}
+
 .loadingOverlay {
     top: 0;
     left: 0;
@@ -32,4 +36,20 @@ html, body {
     background-color: #e8dde7;
     text-align: center;
     font-family: sans-serif;
+}
+
+.dialogTab {
+    width: 100%;
+    height: 35px;
+    margin-bottom: 2px;
+    background-color: rgba(106, 191, 106, 1);
+    border: 1px solid darkslategray;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    font-family: Arial;
+    line-height: 35px;
+}
+.dialogTab:hover {
+    background-color: rgba(106, 191, 106, 0.7);
 }

@@ -3,6 +3,8 @@
     */
 
 define([
+    'pytclon/dialog/panels/PlayerSettings',
+    'pytclon/dialog/panels/GameSettings',
     'dijit/Dialog',
     'dijit/form/Button',
     'dijit/layout/BorderContainer',
@@ -11,6 +13,8 @@ define([
     'dojo/topic',
     'dojo/dom-construct'
 ], function (
+    PlayerSettings,
+    GameSettings,
     Dialog,
     Button,
     BorderContainer,
@@ -21,65 +25,76 @@ define([
 ) {
     const changeTabTopic = 'UserSettingsDialog_changeTab';
 
-    var dialogContent = domConstruct.create('div');
+    function createDialog(tabs) {
+        var bc = new BorderContainer({
+            gutters: false,
+            style: "width: 600px; height: 500px;"
+        });
 
-    var bc = new BorderContainer({
-        gutters: false,
-        style: "width: 600px; height: 500px;"
-    });
+
+        var leftPane = new ContentPane({
+            region: "left",
+            style: "width: 150px; border-right: solid grey 1px",
+            content: tabs
+        });
+
+        var mainPane = new ContentPane({
+            region: "center",
+            content: 'Main'
+        });
+
+        topic.subscribe(changeTabTopic, function (widget) {
+            domConstruct.empty(mainPane.domNode);
+            widget.placeAt(mainPane);
+        });
+
+
+        var bottomPanel = new ContentPane({
+            region: "bottom",
+            style: "border-top: solid grey 1px"
+        });
+        bc.addChild(leftPane);
+        bc.addChild(mainPane);
+        bc.addChild(bottomPanel);
+
+        bc.startup();
+
+        var dialog = new Dialog({
+            title: "User settings",
+            content: bc,
+            closable: false
+        });
+        new Button({
+            label: 'Cancel',
+            style: 'float: right',
+            onClick: function () {
+                dialog.hide();
+            }
+        }).placeAt(bottomPanel);
+        return dialog;
+    }
+
+    function initTabs(tabs) {
+        var _tabs = [
+            new PlayerSettings(),
+            new GameSettings()
+        ];
+        _tabs.forEach(function (tabWidget) {
+            var tabNode = domConstruct.create('div', {
+                class: 'dialogTab',
+                innerHTML: tabWidget.get('title')
+            }, tabs);
+            on(tabNode, 'click', function () {
+                topic.publish(changeTabTopic, tabWidget);
+            })
+        });
+    }
 
     var tabs = domConstruct.create('div');
-    on(domConstruct.create('div', {
-        style: 'width: 100%; height: 35px; margin-bottom: 2px; background-color: red'
-    }, tabs), 'click', function () {
-        console.log('Red');
-        topic.publish(changeTabTopic, domConstruct.create('span', {innerHTML: 'RED'}));
-    });
-    on(domConstruct.create('div', {
-        style: 'width: 100%; height: 35px; margin-bottom: 2px; background-color: green'
-    }, tabs), 'click', function () {
-        console.log('Green');
-        topic.publish(changeTabTopic, domConstruct.create('span', {innerHTML: 'GREEN'}));
-    });
-    var leftPane = new ContentPane({
-        region: "left",
-        style: "width: 150px; border-right: solid grey 1px",
-        content: tabs
-    });
 
-    var mainPane = new ContentPane({
-        region: "center",
-        content: 'Main'
-    });
+    initTabs(tabs);
 
-    topic.subscribe(changeTabTopic, function (mainContent) {
-        domConstruct.empty(mainPane.domNode);
-        domConstruct.place(mainContent, mainPane.domNode);
-    });
-
-
-    var bottomPanel = new ContentPane({
-        region: "bottom",
-        style: "border-top: solid grey 1px"
-    });
-    bc.addChild(leftPane);
-    bc.addChild(mainPane);
-    bc.addChild(bottomPanel);
-
-    bc.startup();
-
-    var dialog = new Dialog({
-        title: "User settings",
-        content: bc,
-        closable: false
-    });
-    new Button({
-        label: 'Cancel',
-        style: 'float: right',
-        onClick: function () {
-            dialog.hide();
-        }
-    }).placeAt(bottomPanel);
+    var dialog = createDialog(tabs);
 
     return dialog
 });
