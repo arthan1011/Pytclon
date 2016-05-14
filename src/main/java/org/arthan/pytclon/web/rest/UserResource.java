@@ -2,9 +2,9 @@ package org.arthan.pytclon.web.rest;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
-import org.arthan.pytclon.domain.control.UserDao;
 import org.arthan.pytclon.domain.entity.User;
 import org.arthan.pytclon.service.UserService;
+import org.arthan.pytclon.web.util.WebUtils;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -16,15 +16,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.io.Serializable;
 import java.net.URI;
-import java.nio.file.attribute.UserPrincipal;
-import java.security.Principal;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static org.arthan.pytclon.web.util.WebUtils.createRange;
 
 /**
  * Created by ashamsiev on 01.03.2016
@@ -62,10 +61,6 @@ public class UserResource implements Serializable {
                     return userMap;
                 }).collect(Collectors.toList());
         return Response.ok(resultList).header("Content-Range", createRange(resultList)).build();
-    }
-
-    private String createRange(List<Map<String, Object>> list) {
-        return MessageFormat.format("items 0-{0}/{1}", list.size() - 1, list.size());
     }
 
     @POST

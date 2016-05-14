@@ -1,7 +1,13 @@
 package org.arthan.pytclon.service;
 
+import org.arthan.pytclon.domain.control.PlayerDao;
+import org.arthan.pytclon.domain.control.UserDao;
+import org.arthan.pytclon.domain.entity.Player;
+
 import javax.ejb.Stateless;
-import java.io.PrintStream;
+import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Arthur Shamsiev on 21.02.16.
@@ -10,13 +16,26 @@ import java.io.PrintStream;
  */
 
 @Stateless
-public class PlayerService {
+public class PlayerService implements Serializable {
 
-    public void greet(PrintStream to, String name) {
-        to.print(createGreeting(name));
+    private PlayerDao playerDao;
+    private UserDao userDao;
+
+    @Inject
+    public PlayerService(
+            PlayerDao playerDao,
+            UserDao userDao
+    ) {
+        this.playerDao = playerDao;
+        this.userDao = userDao;
     }
 
-    public String createGreeting(String name) {
-        return "Hello, " + name + ".";
+    public PlayerService() {
+
+    }
+
+    public List<Player> findAllByUserName(String userName) {
+        Integer userId = userDao.findByLogin(userName).getId();
+        return playerDao.findAllByUserId(userId);
     }
 }

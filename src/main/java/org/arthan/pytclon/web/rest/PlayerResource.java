@@ -1,13 +1,19 @@
 package org.arthan.pytclon.web.rest;
 
-import org.arthan.pytclon.service.ProtectedInfoService;
+import org.arthan.pytclon.domain.entity.Player;
+import org.arthan.pytclon.service.PlayerService;
 
-import javax.ejb.EJBAccessException;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.List;
+
+import static org.arthan.pytclon.web.util.WebUtils.createRange;
 
 /**
  * Created by Arthur Shamsiev on 20.02.16.
@@ -19,19 +25,16 @@ import javax.ws.rs.core.SecurityContext;
 public class PlayerResource {
 
     @Inject
-    ProtectedInfoService infoService;
-    @Context
-    SecurityContext securityContext;
+    PlayerService playerService;
 
-    @Path("/test")
     @GET
-    public String test() {
-        String result;
-        try {
-            result = "Player " + infoService.getInfo();
-        } catch (EJBAccessException e) {
-            result = "Access Denied!";
-        }
-        return result;
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllPlayersForCurrentUser(
+            @Context SecurityContext securityContext
+    ) {
+        String currentUserName = securityContext.getUserPrincipal().getName();
+        List<Player> userPlayers = playerService.findAllByUserName(currentUserName);
+
+        return Response.ok(userPlayers).header("Content-Range", createRange(userPlayers)).build();
     }
 }
