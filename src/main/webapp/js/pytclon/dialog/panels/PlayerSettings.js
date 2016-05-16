@@ -4,12 +4,18 @@
 
 define([
     'dijit/layout/ContentPane',
+    'pytclon/dialog/widgets/PlayerElement',
     'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/dom-construct',
     'dojo/store/JsonRest',
     'dojo/text!./PlayerSettings.html'
 ], function (
     ContentPane,
+    PlayerElement,
     declare,
+    lang,
+    domConstruct,
     JsonRest,
     panelContent
 ) {
@@ -30,9 +36,13 @@ define([
             });
 
             restStore.get()
-                .then(function (results) {
+                .then(lang.hitch(this, function (results) {
+                    var containerNode = this.containerNode;
                     console.log('User players: ', results);
-                });
+                    results.forEach(function(item) {
+                        (new PlayerElement(item)).placeAt(containerNode);
+                    });
+                }));
 
             this.inherited(arguments);
         }

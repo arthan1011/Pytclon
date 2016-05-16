@@ -53,3 +53,9 @@ html, body {
 .dialogTab:hover {
     background-color: rgba(106, 191, 106, 0.7);
 }
+
+.player-element {
+    background-color: darkcyan;
+    height: 80px;
+    margin-bottom: 5px
+}
