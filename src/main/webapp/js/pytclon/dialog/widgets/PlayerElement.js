@@ -20,9 +20,17 @@ define([
 
         buildRendering: function() {
             this.domNode = domConstruct.create('div', {
-                innerHTML: this.player.name,
                 class: 'player-element'
-            })
+            });
+
+            domConstruct.create('div', {
+                class: 'player-thumbnail'
+            }, this.domNode);
+
+            domConstruct.create('div', {
+                class: 'player-description',
+                innerHTML: 'Name: ' + this.player.name
+            }, this.domNode);
         }
     });
 });

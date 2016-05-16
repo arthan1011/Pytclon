@@ -47,7 +47,7 @@ html, body {
     cursor: pointer;
     text-align: center;
     vertical-align: middle;
-    font-family: Arial;
+    font-family: Arial, serif;
     line-height: 35px;
 }
 .dialogTab:hover {
@@ -55,7 +55,20 @@ html, body {
 }
 
 .player-element {
-    background-color: darkcyan;
+    font-family: Arial, serif;
+    cursor: default;
+    background-color: #00c4c4;
     height: 80px;
     margin-bottom: 5px
+}
+
+.player-element > * {
+    margin: 10px;
+    float: left;
+    height: 60px;
+}
+
+.player-element .player-thumbnail {
+    background-color: #FFFFFF;
+    width: 60px;
 }
