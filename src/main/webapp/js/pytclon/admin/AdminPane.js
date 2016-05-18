@@ -49,7 +49,7 @@ define([
                 widget: new Users
             },
             {
-                title: 'Not Users',
+                title: 'Players',
                 widget: new NotUsers
             },
             {
