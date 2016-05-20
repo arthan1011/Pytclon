@@ -1,17 +1,21 @@
 package org.arthan.pytclon.web.rest;
 
+import org.apache.commons.io.IOUtils;
 import org.arthan.pytclon.domain.entity.Player;
 import org.arthan.pytclon.service.PlayerService;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import static org.arthan.pytclon.web.util.WebUtils.createRange;
 
@@ -36,5 +40,24 @@ public class PlayerResource {
         List<Player> userPlayers = playerService.findAllByUserName(currentUserName);
 
         return Response.ok(userPlayers).header("Content-Range", createRange(userPlayers)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Path("/images")
+    public Response uploadFile(MultipartFormDataInput input) {
+        Map<String, List<InputPart>> dataMap = input.getFormDataMap();
+        List<InputPart> inputParts = dataMap.get("uploadedFile");
+
+        for (InputPart inputPart : inputParts) {
+            try {
+                InputStream stream = inputPart.getBody(InputStream.class, null);
+                byte[] bytes = IOUtils.toByteArray(stream);
+                System.out.println("done");
+            } catch (IOException e) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Invalid file!").build();
+            }
+        }
+        return Response.ok().build();
     }
 }
