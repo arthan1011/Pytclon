@@ -4,6 +4,7 @@
 
 define([
     "dojo/_base/declare",
+    "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/dom",
     "dojo/request",
@@ -13,6 +14,7 @@ define([
     "dojox/form/uploader/FileList"
 ], function(
     declare,
+    lang,
     domConstruct,
     dom,
     request,
@@ -23,6 +25,8 @@ define([
 ) {
     return declare("admin/widgets/PlayerImageUpload", [_WidgetBase], {
 
+        imageGallery: undefined,
+
         buildRendering: function() {
             this.domNode = domConstruct.create('div');
 
@@ -32,12 +36,47 @@ define([
                 label: "Select images",
                 multiple: true,
                 uploadOnSelect: true,
-                onComplete: function () {
-                    console.log('File uploaded!');
-                },
+                onComplete: lang.hitch(this, this.reloadGallery),
                 url: "rest/player/images"
             }, uploadForm));
             imageUploader.startup();
+
+            this.imageGallery = domConstruct.create('div', {
+                id: 'imageDisplay',
+                class: "image-gallery"
+            }, this.domNode);
+
+            this.reloadGallery();
+        },
+
+        postCreate: function () {
+
+        },
+
+        reloadGallery: function() {
+            var gallery = this.imageGallery;
+
+            domConstruct.empty(gallery);
+
+            request("rest/player/images", {
+                handleAs: "json"
+            }).then(function (ids) {
+                ids.forEach(function (item) {
+                    addImageToGallery(gallery, item);
+                });
+            }, function (error) {
+                alert(error);   
+            });
+
+            function addImageToGallery(gallery, imageId) {
+                domConstruct.create('img', {
+                    src: "rest/player/image/" + imageId,
+                    width: 80,
+                    height: 80,
+                    style: "margin: 2px;"
+                }, gallery)
+            }
         }
     });
+    
 });

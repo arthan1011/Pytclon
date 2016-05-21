@@ -1,5 +1,6 @@
 package org.arthan.pytclon.service;
 
+import com.google.common.collect.Lists;
 import org.arthan.pytclon.domain.control.PlayerDao;
 import org.arthan.pytclon.domain.control.PlayerImageDao;
 import org.arthan.pytclon.domain.control.UserDao;
@@ -10,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Arthur Shamsiev on 21.02.16.
@@ -48,5 +50,19 @@ public class PlayerService implements Serializable {
         for (PlayerImage image : playerImages) {
             playerImageDao.save(image);
         }
+    }
+
+    public byte[] getImageContentById(String imageId) {
+        PlayerImage playerImage = playerImageDao.byId(Integer.valueOf(imageId));
+        return playerImage.getContent();
+    }
+
+    public List<Integer> getAllImagesIds() {
+        List<PlayerImage> allImages = playerImageDao.findAll();
+        List<Integer> ids = Lists.newArrayList();
+        ids.addAll(allImages.stream()
+                .map(PlayerImage::getId)
+                .collect(Collectors.toList()));
+        return ids;
     }
 }

@@ -36,6 +36,11 @@ html, body, .outerContainer {
     font-family: sans-serif;
 }
 
+.image-gallery {
+    border: 2px solid darkslategray;
+    padding: 5px;
+}
+
 /*For GridX*/
 .gridx {
     height: 100%;

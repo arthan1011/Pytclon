@@ -10,12 +10,10 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +65,25 @@ public class PlayerResource {
         playerService.addPlayerImages(images);
 
         return Response.ok("{\"response\": \"success\"}").build();
+    }
 
+    @GET
+    @Produces("image/gif")
+    @Path("/image/{id}")
+    public Response getPicture(@PathParam("id") String imageId) {
+        byte[] imageContent = playerService.getImageContentById(imageId);
+
+        return Response.ok((StreamingOutput) outputStream -> {
+            outputStream.write(imageContent);
+            outputStream.flush();
+        }).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/images")
+    public Response getAllImagesIds() {
+        List<Integer> allImagesIds = playerService.getAllImagesIds();
+        return Response.ok(allImagesIds).build();
     }
 }
