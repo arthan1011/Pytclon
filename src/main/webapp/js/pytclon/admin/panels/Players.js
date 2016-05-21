@@ -13,9 +13,9 @@ define([
     _AdminPanelMixin,
     PlayerImageUpload
 ) {
-    return declare("admin/panels/NotUsers", [ContentPane, _AdminPanelMixin], {
+    return declare("admin/panels/Players", [ContentPane, _AdminPanelMixin], {
 
-        content: 'Not Users',
+        content: 'Players',
         title: 'Players',
 
         constructor: function() {

@@ -1,7 +1,9 @@
 package org.arthan.pytclon.web.rest;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
 import org.arthan.pytclon.domain.entity.Player;
+import org.arthan.pytclon.domain.entity.PlayerImage;
 import org.arthan.pytclon.service.PlayerService;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -51,15 +53,20 @@ public class PlayerResource {
         Map<String, List<InputPart>> dataMap = input.getFormDataMap();
         List<InputPart> inputParts = dataMap.get(UPLOADED_FILES_KEY);
 
+        List<PlayerImage> images = Lists.newArrayList();
+
         for (InputPart inputPart : inputParts) {
             try {
                 InputStream stream = inputPart.getBody(InputStream.class, null);
                 byte[] bytes = ByteStreams.toByteArray(stream);
-                System.out.println("done");
+                images.add(new PlayerImage(bytes));
             } catch (IOException e) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Invalid file!").build();
             }
         }
+        playerService.addPlayerImages(images);
+
         return Response.ok("{\"response\": \"success\"}").build();
+
     }
 }

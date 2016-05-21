@@ -17,7 +17,7 @@ define([
     "pytclon/admin/AdminLeftMenu",
     "pytclon/admin/AdminStackPanel",
     "pytclon/admin/panels/Settings",
-    "pytclon/admin/panels/NotUsers",
+    "pytclon/admin/panels/Players",
     "pytclon/admin/panels/Users",
     "dojo/text!./templates/AdminPane.html"
 ], function(
@@ -35,7 +35,7 @@ define([
     AdminLeftMenu,
     AdminStackPanel,
     Settings,
-    NotUsers,
+    Players,
     Users,
     template
 ) {
@@ -50,7 +50,7 @@ define([
             },
             {
                 title: 'Players',
-                widget: new NotUsers
+                widget: new Players
             },
             {
                 title: 'Settings',
