@@ -1,6 +1,6 @@
 package org.arthan.pytclon.web.rest;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.ByteStreams;
 import org.arthan.pytclon.domain.entity.Player;
 import org.arthan.pytclon.service.PlayerService;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
@@ -28,6 +28,8 @@ import static org.arthan.pytclon.web.util.WebUtils.createRange;
 @Path("/player")
 public class PlayerResource {
 
+    private static final String UPLOADED_FILES_KEY = "uploadedfiles[]";
+
     @Inject
     PlayerService playerService;
 
@@ -47,17 +49,17 @@ public class PlayerResource {
     @Path("/images")
     public Response uploadFile(MultipartFormDataInput input) {
         Map<String, List<InputPart>> dataMap = input.getFormDataMap();
-        List<InputPart> inputParts = dataMap.get("uploadedFile");
+        List<InputPart> inputParts = dataMap.get(UPLOADED_FILES_KEY);
 
         for (InputPart inputPart : inputParts) {
             try {
                 InputStream stream = inputPart.getBody(InputStream.class, null);
-                byte[] bytes = IOUtils.toByteArray(stream);
+                byte[] bytes = ByteStreams.toByteArray(stream);
                 System.out.println("done");
             } catch (IOException e) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Invalid file!").build();
             }
         }
-        return Response.ok().build();
+        return Response.ok("{\"response\": \"success\"}").build();
     }
 }
