@@ -44,6 +44,13 @@ public class PlayerResource {
         return Response.ok(userPlayers).header("Content-Range", createRange(userPlayers)).build();
     }
 
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updatePlayer(Player player) {
+
+        return Response.ok().build();
+    }
+
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/images")

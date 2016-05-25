@@ -72,3 +72,11 @@ html, body {
     background-color: #FFFFFF;
     width: 60px;
 }
+
+.set-field {
+    cursor: pointer;
+    color: blue;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
