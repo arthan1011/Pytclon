@@ -5,11 +5,13 @@
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
-    "dijit/_WidgetBase"
+    "dijit/_WidgetBase",
+    'pytclon/dialog/widgets/PlayerImagePicker'
 ], function(
     declare,
     domConstruct,
-    _WidgetBase
+    _WidgetBase,
+    PlayerImagePicker
 ) {
     return declare("dialog/widgets/PlayerElement", [_WidgetBase], {
 
@@ -23,9 +25,9 @@ define([
                 class: 'player-element'
             });
 
-            domConstruct.create('div', {
-                class: 'player-thumbnail'
-            }, this.domNode);
+            (new PlayerImagePicker({
+                playerId: '3'
+            })).placeAt(this.domNode);
 
             domConstruct.create('div', {
                 class: 'player-description',
