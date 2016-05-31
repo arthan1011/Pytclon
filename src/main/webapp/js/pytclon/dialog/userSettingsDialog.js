@@ -23,7 +23,7 @@ define([
     topic,
     domConstruct
 ) {
-    const changeTabTopic = 'UserSettingsDialog_changeTab';
+    const SET_TAB_TOPIC = 'UserSettingsDialog_changeTab';
 
     function createDialog(tabs) {
         var bc = new BorderContainer({
@@ -43,9 +43,13 @@ define([
             content: 'Main'
         });
 
-        topic.subscribe(changeTabTopic, function (widget) {
-            domConstruct.empty(mainPane.domNode);
-            widget.placeAt(mainPane);
+        function setWidget(widget, target) {
+            domConstruct.empty(target.domNode);
+            widget.placeAt(target);
+        }
+
+        topic.subscribe(SET_TAB_TOPIC, function (widget) {
+            setWidget(widget, mainPane);
         });
 
 
@@ -74,27 +78,29 @@ define([
         return dialog;
     }
 
-    function initTabs(tabs) {
-        var _tabs = [
+    function initTabs(tabsContainer) {
+        var tabs = [
             new PlayerSettings(),
             new GameSettings()
         ];
-        _tabs.forEach(function (tabWidget) {
+        tabs.forEach(function (tabWidget) {
             var tabNode = domConstruct.create('div', {
                 class: 'dialogTab',
                 innerHTML: tabWidget.get('title')
-            }, tabs);
+            }, tabsContainer);
             on(tabNode, 'click', function () {
-                topic.publish(changeTabTopic, tabWidget);
+                topic.publish(SET_TAB_TOPIC, tabWidget);
             })
         });
+        // set default tab
+        topic.publish(SET_TAB_TOPIC, tabs[0]);
     }
 
-    var tabs = domConstruct.create('div');
+    var tabsContainer = domConstruct.create('div');
 
-    initTabs(tabs);
+    var dialog = createDialog(tabsContainer);
 
-    var dialog = createDialog(tabs);
+    initTabs(tabsContainer);
 
     return dialog
 });
