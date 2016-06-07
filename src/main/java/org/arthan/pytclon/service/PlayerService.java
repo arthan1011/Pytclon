@@ -6,6 +6,7 @@ import org.arthan.pytclon.domain.control.PlayerImageDao;
 import org.arthan.pytclon.domain.control.UserDao;
 import org.arthan.pytclon.domain.entity.Player;
 import org.arthan.pytclon.domain.entity.PlayerImage;
+import org.arthan.pytclon.domain.entity.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -50,6 +51,12 @@ public class PlayerService implements Serializable {
         for (PlayerImage image : playerImages) {
             playerImageDao.save(image);
         }
+    }
+
+    public void savePlayer(Player player, String userLogin) {
+        User user = userDao.findByLogin(userLogin);
+        player.setUserId(user.getId());
+        playerDao.save(player);
     }
 
     public byte[] getImageContentById(String imageId) {

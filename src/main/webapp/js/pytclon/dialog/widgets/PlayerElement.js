@@ -58,7 +58,7 @@ define([
             var self = this;
 
             var mode = VIEW_MODE;
-            return function(e) {
+            return function() {
                 if (mode === VIEW_MODE) {
                     console.log('Name click');
                     mode = EDIT_MODE;

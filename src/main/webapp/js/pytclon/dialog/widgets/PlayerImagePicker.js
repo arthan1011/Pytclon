@@ -46,7 +46,7 @@ define([
             if (!config.playerId) {
                 throw new Error('Player ID for player image picker is not defined!')
             }
-            this.playeId = config.playerId;
+            this.playerId = config.playerId;
 
             this._initTooltip();
 
@@ -83,6 +83,7 @@ define([
                         width: 60,
                         height: 60
                     }, this.domNode);
+                    // TODO: send image id selected for player
                 }));
             }));
 

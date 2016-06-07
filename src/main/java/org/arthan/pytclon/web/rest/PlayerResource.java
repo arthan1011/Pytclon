@@ -13,7 +13,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -46,8 +45,10 @@ public class PlayerResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updatePlayer(Player player) {
-
+    @Path("/{id}")
+    public Response updatePlayer(Player player, @Context SecurityContext context) {
+        String userLogin = context.getUserPrincipal().getName();
+        playerService.savePlayer(player, userLogin);
         return Response.ok().build();
     }
 

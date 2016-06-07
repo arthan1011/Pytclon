@@ -85,7 +85,7 @@ define([
         ];
         tabs.forEach(function (tabWidget) {
             var tabNode = domConstruct.create('div', {
-                class: 'dialogTab',
+                "class": 'dialogTab',
                 innerHTML: tabWidget.get('title')
             }, tabsContainer);
             on(tabNode, 'click', function () {
