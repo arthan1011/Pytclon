@@ -21,7 +21,7 @@ define([
     popup,
     _WidgetBase
 ) {
-    return declare("dialog/widgets/PlayerImagePicker", [_WidgetBase], {
+    return declare([_WidgetBase], {
 
         _tooltip: null,
         imageIds: null,
