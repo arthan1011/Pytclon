@@ -10,8 +10,10 @@ define([
     "dojo/store/JsonRest",
     "dijit/form/TextBox",
     "dijit/_WidgetBase",
+    "dijit/_TemplatedMixin",
     "pytclon/dialog/widgets/PlayerImagePicker",
-    "pytclon/dialog/widgets/PField"
+    "pytclon/dialog/widgets/PField",
+    "dojo/text!./PlayerElement.html"
 ], function(
     declare,
     domConstruct,
@@ -20,10 +22,14 @@ define([
     JsonRest,
     TextBox,
     _WidgetBase,
+    _TemplatedMixin,
     PlayerImagePicker,
-    PField
+    PField,
+    template
 ) {
-    return declare([_WidgetBase], {
+    return declare([_WidgetBase, _TemplatedMixin], {
+
+        templateString: template,
 
         ENTER_KEY_CODE: 13,
         _restStore: new JsonRest({
@@ -31,27 +37,19 @@ define([
         }),
 
         constructor: function(player) {
-            console.log('Player element constructed');
             this.player = player;
         },
 
-        buildRendering: function() {
-            this.domNode = domConstruct.create('div', {
-                class: 'player-element'
-            });
-
-            (new PlayerImagePicker({
+        postCreate: function() {
+            console.log("Creating player Element");
+            new PlayerImagePicker({
                 playerId: '3'
-            })).placeAt(this.domNode);
+            }, this.imagePicker);
 
-            var playerProps = domConstruct.create('div', {
-                class: 'player-description'
-            }, this.domNode);
-
-            (new PField({
+            new PField({
                 changeCallback: this.funcUpdatePlayer(),
                 player: this.player
-            })).placeAt(playerProps);
+            }, this.playerName)
         },
 
         funcUpdatePlayer: function() {
