@@ -1,7 +1,6 @@
 package org.arthan.pytclon.domain.entity;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
@@ -12,7 +11,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "players")
-public class Player implements Serializable {
+public class Player implements Serializable, MergeEntity, DBEntity {
 
     @Id
     @SequenceGenerator(
@@ -28,6 +27,18 @@ public class Player implements Serializable {
 
     @Column(name = "user_id")
     private Integer userId;
+
+    @Column(name = "player_image_id")
+    private Integer playerImageId;
+
+    public Player(String name, int imageId) {
+        this.name = name;
+        this.playerImageId = imageId;
+    }
+
+    public Player() {
+        // empty on purpose
+    }
 
     public String getName() {
         return name;
@@ -51,5 +62,27 @@ public class Player implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPlayerImageId() {
+        return playerImageId;
+    }
+
+    public void setPlayerImageId(Integer playerImageId) {
+        this.playerImageId = playerImageId;
+    }
+
+    @Override
+    public void merge(MergeEntity entity) {
+        Player newPlayerData = (Player) entity;
+        if (newPlayerData.getName() != null) {
+            setName(newPlayerData.getName());
+        }
+        if (newPlayerData.getUserId() != null) {
+            setUserId(newPlayerData.getUserId());
+        }
+        if (newPlayerData.getPlayerImageId() != null) {
+            setPlayerImageId(newPlayerData.getPlayerImageId());
+        }
     }
 }

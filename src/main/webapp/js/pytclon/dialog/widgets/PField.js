@@ -40,7 +40,11 @@ define([
         },
 
         postCreate: function () {
-            this.modeHandler = on.pausable(this.domNode, 'click', lang.hitch(this, this._changeValue));
+            this.modeHandler = on.pausable(
+                this.domNode, 
+                'click', 
+                lang.hitch(this, this._changeValue)
+            );
         },
 
         _changeValue: function () {

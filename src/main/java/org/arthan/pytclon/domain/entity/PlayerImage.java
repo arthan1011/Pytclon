@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="player_image")
-public class PlayerImage implements Serializable {
+public class PlayerImage implements Serializable, DBEntity {
 
     public PlayerImage() {
     }
@@ -29,7 +29,7 @@ public class PlayerImage implements Serializable {
     @Column(name = "content")
     private byte[] content;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

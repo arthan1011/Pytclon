@@ -56,7 +56,22 @@ public class PlayerService implements Serializable {
     public void savePlayer(Player player, String userLogin) {
         User user = userDao.findByLogin(userLogin);
         player.setUserId(user.getId());
-        playerDao.save(player);
+
+        if (player.getId() != null) {
+            update(player);
+        } else {
+            playerDao.save(player);
+        }
+    }
+
+    private void update(Player player) {
+        Player savedPlayer = playerDao.byId(player.getId());
+        /*savedPlayer.setUserId(player.getUserId());
+        savedPlayer.setName(player.getName());
+        savedPlayer.setPlayerImageId(player.getPlayerImageId());
+        */
+
+        savedPlayer.merge(player);
     }
 
     public byte[] getImageContentById(String imageId) {

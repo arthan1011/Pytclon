@@ -41,12 +41,13 @@ define([
                 this.imageIds = res;
             }));
         },
+        
         constructor: function(config) {
             
-            if (!config.playerId) {
+            if (!config.player.id) {
                 throw new Error('Player ID for player image picker is not defined!')
             }
-            this.playerId = config.playerId;
+            this.player = config.player;
 
             this._initTooltip();
 
@@ -63,9 +64,26 @@ define([
                 this._showGallery(this.imageIds);
             }));
         },
+
+        postCreate: function () {
+            if (this.player.playerImageId) {
+                this._setImage(this.player.playerImageId)
+            }
+        },
+        
         _closeTooltip: function () {
             popup.close(this._tooltip)
         },
+
+        _setImage: function (imageId) {
+            domConstruct.empty(this.domNode);
+            domConstruct.create('img', {
+                src: "rest/player/image/" + imageId,
+                width: 60,
+                height: 60
+            }, this.domNode);
+        },
+
         _showGallery: function (images) {
             var gallery = domConstruct.create('div', null);
 
@@ -77,13 +95,10 @@ define([
                     style: "margin: 2px;"
                 }, gallery);
                 on(imageNode, "click", lang.hitch(this, function () {
-                    domConstruct.empty(this.domNode);
-                    domConstruct.create('img', {
-                        src: "rest/player/image/" + imageId,
-                        width: 60,
-                        height: 60
-                    }, this.domNode);
+                    this._setImage(imageId);
                     // TODO: send image id selected for player
+                    
+                    this._savePlayerImage(imageId);
                 }));
             }));
 
@@ -92,8 +107,14 @@ define([
                 popup: this._tooltip,
                 around: this.domNode
             });
-        }
+        },
 
+        _savePlayerImage: function (imageId) {
+            this.changeCallback({
+                playerImageId: imageId,
+                id: this.player.id
+            });
+        }
 
     });
 });

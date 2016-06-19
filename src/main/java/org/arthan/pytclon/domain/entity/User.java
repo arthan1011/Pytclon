@@ -1,6 +1,5 @@
 package org.arthan.pytclon.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @SecondaryTable(name = "user_roles", pkJoinColumns = {@PrimaryKeyJoinColumn(name = "id") })
-public class User implements Serializable {
+public class User implements Serializable, DBEntity {
 
     public User() {
     }

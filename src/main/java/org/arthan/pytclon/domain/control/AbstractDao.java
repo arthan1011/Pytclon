@@ -1,5 +1,7 @@
 package org.arthan.pytclon.domain.control;
 
+import org.arthan.pytclon.domain.entity.DBEntity;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
@@ -10,7 +12,7 @@ import java.util.List;
  * Created by ashamsiev on 01.03.2016
  */
 
-public abstract class AbstractDao<T extends Serializable> implements Serializable {
+public abstract class AbstractDao<T extends Serializable & DBEntity> implements Serializable {
 
     @PersistenceContext(unitName = "primary")
     EntityManager em;

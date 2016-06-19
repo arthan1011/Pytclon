@@ -43,7 +43,8 @@ define([
         postCreate: function() {
             console.log("Creating player Element");
             new PlayerImagePicker({
-                playerId: '3'
+                changeCallback: this.funcUpdatePlayer(),
+                player: this.player
             }, this.imagePicker);
 
             new PField({
